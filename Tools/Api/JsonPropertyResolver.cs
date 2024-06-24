@@ -5,7 +5,7 @@ using System.Text.Json.Serialization;
 
 namespace FrenchyApps42.Tools.Api
 {
-    public class AttributeContractResolver : DefaultContractResolver
+    public class JsonPropertyResolver : DefaultContractResolver
     {
         protected override IList<JsonProperty> CreateProperties(Type type, MemberSerialization memberSerialization)
         {

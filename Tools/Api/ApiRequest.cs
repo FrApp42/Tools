@@ -1,4 +1,4 @@
-﻿using FrenchyApps42.Tools.ApiRequest.Interfaces;
+﻿using FrenchyApps42.Tools.Api.Interfaces;
 using Newtonsoft.Json;
 using System.Text;
 
@@ -19,7 +19,7 @@ namespace FrenchyApps42.Tools.Api
 
         private JsonSerializerSettings _jsonSerializerSettings = new()
         {
-            ContractResolver = new AttributeContractResolver(),
+            ContractResolver = new JsonPropertyResolver(),
             Formatting = Formatting.Indented
         };
 
