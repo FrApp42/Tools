@@ -5,7 +5,9 @@
 This class creates and send a magic packet for Wake On Lan.
 
 Source: [Link](https://stackoverflow.com/a/58043033)  
-Author: [Poul Bak](https://stackoverflow.com/users/5741643/poul-bak)
+Author:
+* [Poul Bak](https://stackoverflow.com/users/5741643/poul-bak) - Original author
+* [Sikelio](https://github.com/Sikelio) - Contributor by editing the code to match the today's conventions
 
 ## Usage
 
