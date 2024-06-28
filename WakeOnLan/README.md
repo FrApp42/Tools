@@ -1,4 +1,4 @@
-# Wake On Lan
+# WakeOnLan
 
 ## About
 

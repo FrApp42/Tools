@@ -1,4 +1,4 @@
-# Shutdown On SMB
+# Shutdowner
 
 ## About
 
