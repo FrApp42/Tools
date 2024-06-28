@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics;
 
-namespace FrenchyApps42.Tools.ShutdownOnSmb
+namespace FrenchyApps42.System.Shutdowner
 {
     public class Shutdowner
     {

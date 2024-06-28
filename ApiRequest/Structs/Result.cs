@@ -1,4 +1,4 @@
-﻿namespace FrenchyApps42.Tools.Api
+﻿namespace FrenchyApps42.Web.ApiRequest.Structs
 {
     public struct Result<T>
     {
