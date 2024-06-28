@@ -1,4 +1,4 @@
-﻿namespace FrenchyApps42.Tools.Api.Interfaces
+﻿namespace FrenchyApps42.Web.ApiRequest.Interfaces
 {
     public class IApiRequest
     {

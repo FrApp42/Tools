@@ -1,15 +1,15 @@
-﻿using System.Net;
-using System.Net.NetworkInformation;
+﻿using System.Net.NetworkInformation;
 using System.Net.Sockets;
+using System.Net;
 using System.Text.RegularExpressions;
 
-namespace FrenchyApps42.Tools.WakeOnLan
+namespace FrenchyApps42.System.WakeOnLan
 {
-    public partial class Wol
+    public partial class WakeOnLan
     {
         public static async Task WakeUp(string macAddress)
         {
-            byte[] magicPacket = Wol.BuildMagicPacket(macAddress);
+            byte[] magicPacket = WakeOnLan.BuildMagicPacket(macAddress);
 
             IEnumerable<NetworkInterface> networkInterfaces = NetworkInterface
                 .GetAllNetworkInterfaces()
@@ -32,7 +32,7 @@ namespace FrenchyApps42.Tools.WakeOnLan
 
                         if (unicastIPAddressInformation != null)
                         {
-                            await Wol.SendWakeOnLan(unicastIPAddressInformation.Address, multicastIpAddress, magicPacket);
+                            await WakeOnLan.SendWakeOnLan(unicastIPAddressInformation.Address, multicastIpAddress, magicPacket);
                         }
                     }
                     else if (multicastIpAddress.ToString().Equals("224.0.0.1"))
@@ -45,7 +45,7 @@ namespace FrenchyApps42.Tools.WakeOnLan
 
                         if (unicastIPAddressInformation != null)
                         {
-                            await Wol.SendWakeOnLan(unicastIPAddressInformation.Address, multicastIpAddress, magicPacket);
+                            await WakeOnLan.SendWakeOnLan(unicastIPAddressInformation.Address, multicastIpAddress, magicPacket);
                         }
                     }
                 }

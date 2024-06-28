@@ -1,8 +1,10 @@
-﻿using FrenchyApps42.Tools.Api.Interfaces;
+﻿using FrenchyApps42.Web.ApiRequest.Helpers;
+using FrenchyApps42.Web.ApiRequest.Interfaces;
+using FrenchyApps42.Web.ApiRequest.Structs;
 using Newtonsoft.Json;
 using System.Text;
 
-namespace FrenchyApps42.Tools.Api
+namespace FrenchyApps42.Web.ApiRequest
 {
     public class ApiRequest : IApiRequest
     {
@@ -19,7 +21,7 @@ namespace FrenchyApps42.Tools.Api
 
         private JsonSerializerSettings _jsonSerializerSettings = new()
         {
-            ContractResolver = new JsonPropertyResolver(),
+            ContractResolver = new JsonPropAttrResolver(),
             Formatting = Formatting.Indented
         };
 
@@ -146,7 +148,7 @@ namespace FrenchyApps42.Tools.Api
             try
             {
                 response = await this._httpClient.SendAsync(request);
-                result.StatusCode = (int) response.StatusCode;
+                result.StatusCode = (int)response.StatusCode;
 
                 if (response.IsSuccessStatusCode)
                 {

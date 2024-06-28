@@ -3,16 +3,19 @@ using Newtonsoft.Json.Serialization;
 using System.Reflection;
 using System.Text.Json.Serialization;
 
-namespace FrenchyApps42.Tools.Api
+namespace FrenchyApps42.Web.ApiRequest.Helpers
 {
-    public class JsonPropertyResolver : DefaultContractResolver
+    public class JsonPropAttrResolver : DefaultContractResolver
     {
         protected override IList<JsonProperty> CreateProperties(Type type, MemberSerialization memberSerialization)
         {
-            var props = base.CreateProperties(type, memberSerialization);
+            IList<JsonProperty> props = base.CreateProperties(type, memberSerialization);
 
-            foreach (var prop in props)
+            foreach (JsonProperty prop in props)
             {
+                if (prop.UnderlyingName == null)
+                    continue;
+
                 PropertyInfo? propInfo = type
                     .GetProperty(prop.UnderlyingName, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
 
