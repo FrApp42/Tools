@@ -2,6 +2,7 @@
 using FrenchyApps42.Web.ApiRequest.Interfaces;
 using FrenchyApps42.Web.ApiRequest.Structs;
 using Newtonsoft.Json;
+using System.Net.Http.Headers;
 using System.Text;
 
 namespace FrenchyApps42.Web.ApiRequest
@@ -18,6 +19,9 @@ namespace FrenchyApps42.Web.ApiRequest
         public Dictionary<string, string> QueryParams { get; private set; } = [];
 
         public object Body { get; private set; } = null;
+        public byte[] DocumentBody { get; private set; } = null;
+        public string DocumentFileName { get; private set; } = null;
+        public string ContentType { get; private set; } = null;
 
         private JsonSerializerSettings _jsonSerializerSettings = new()
         {
@@ -76,7 +80,7 @@ namespace FrenchyApps42.Web.ApiRequest
 
         public ApiRequest AddQueryParam(string key, string value)
         {
-            QueryParams.Add(key, value);
+            this.QueryParams.Add(key, value);
 
             return this;
         }
@@ -85,7 +89,7 @@ namespace FrenchyApps42.Web.ApiRequest
         {
             foreach (KeyValuePair<string, string> query in queryParams)
             {
-                QueryParams.Add(query.Key, query.Value);
+                this.QueryParams.Add(query.Key, query.Value);
             }
 
             return this;
@@ -93,14 +97,29 @@ namespace FrenchyApps42.Web.ApiRequest
 
         public ApiRequest AcceptJson()
         {
-            RequestHeaders.Add("Accept", "application/json");
+            this.RequestHeaders.Add("Accept", "application/json");
 
             return this;
         }
 
         public ApiRequest AddJsonBody(object body)
         {
-            Body = body;
+            this.Body = body;
+
+            return this;
+        }
+
+        public ApiRequest AddDocumentBody(byte[] document, string fileName)
+        {
+            this.DocumentBody = document;
+            this.DocumentFileName = fileName;
+
+            return this;
+        }
+
+        public ApiRequest SetContentType(string contentType)
+        {
+            this.ContentType = contentType;
 
             return this;
         }
@@ -135,7 +154,23 @@ namespace FrenchyApps42.Web.ApiRequest
                 request.Headers.Add(header.Key, header.Value);
             }
 
-            if (Body != null)
+            if (DocumentBody != null)
+            {
+                MultipartFormDataContent content = new();
+                ByteArrayContent fileContent = new(DocumentBody);
+
+                fileContent.Headers.ContentDisposition = new ContentDispositionHeaderValue("binary")
+                {
+                    Name = "file",
+                    FileName = DocumentFileName
+                };
+
+                content.Add(fileContent);
+
+                request.Content = content;
+                request.Content.Headers.ContentType = new(this.ContentType);
+            }
+            else if (Body != null)
             {
                 string json = JsonConvert.SerializeObject(Body, _jsonSerializerSettings);
                 request.Content = new StringContent(json, Encoding.UTF8, "application/json");

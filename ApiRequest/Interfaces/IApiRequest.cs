@@ -8,5 +8,8 @@
         public Dictionary<string, string> ContentHeaders { get; private set; }
         public Dictionary<string, string> QueryParams { get; private set; }
         public object Body { get; private set; }
+        public byte[] DocumentBody { get; private set; }
+        public string DocumentFileName { get; private set; }
+        public string ContentType { get; private set; }
     }
 }
