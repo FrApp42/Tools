@@ -9,10 +9,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApiRequest", "ApiRequest\Ap
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shutdowner", "Shutdowner\Shutdowner.csproj", "{6A20A86C-2EF7-4399-AC17-4B97FD5939C5}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "System", "System", "{C939D42D-C745-4E85-A146-BF849967546A}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Web", "Web", "{22AD52C0-6E31-4FE5-A57A-BC62B5668829}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -34,11 +30,6 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(NestedProjects) = preSolution
-		{F158085E-AA44-450C-B628-8F51B84063D8} = {C939D42D-C745-4E85-A146-BF849967546A}
-		{059E59CA-1E92-4268-9518-A3B16D08990D} = {22AD52C0-6E31-4FE5-A57A-BC62B5668829}
-		{6A20A86C-2EF7-4399-AC17-4B97FD5939C5} = {C939D42D-C745-4E85-A146-BF849967546A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D96B448B-996B-42CE-B038-4739696F8E49}
