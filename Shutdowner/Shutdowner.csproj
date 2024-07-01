@@ -9,13 +9,20 @@
     <Title>Shutdowner</Title>
     <Authors>Sikelio</Authors>
     <Company>FrenchyApps42</Company>
-    <PackageProjectUrl>https://github.com/FrApp42/Tools</PackageProjectUrl>
+    <PackageProjectUrl>https://github.com/FrApp42/Tools/tree/main/Shutdowner</PackageProjectUrl>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <RepositoryUrl>https://github.com/FrApp42/Tools</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
+    <PackageLicenseFile>LICENCE.md</PackageLicenseFile>
+    <Description>A class that sends a command to shutdown a computer with its hostname or perform various other shutdown-related operations.</Description>
+    <PackageTags>shutdown; shutdowner; smb; admin tool</PackageTags>
   </PropertyGroup>
 
   <ItemGroup>
+    <None Update="LICENCE.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
     <None Update="README.md">
       <Pack>True</Pack>
       <PackagePath>\</PackagePath>
