@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.9.34728.123
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WakeOnLan", "WakeOnLan\WakeOnLan.csproj", "{F158085E-AA44-450C-B628-8F51B84063D8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WakeOnLan", "WakeOnLan\WakeOnLan.csproj", "{F158085E-AA44-450C-B628-8F51B84063D8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApiRequest", "ApiRequest\ApiRequest.csproj", "{059E59CA-1E92-4268-9518-A3B16D08990D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ApiRequest", "ApiRequest\ApiRequest.csproj", "{059E59CA-1E92-4268-9518-A3B16D08990D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shutdowner", "Shutdowner\Shutdowner.csproj", "{6A20A86C-2EF7-4399-AC17-4B97FD5939C5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shutdowner", "Shutdowner\Shutdowner.csproj", "{6A20A86C-2EF7-4399-AC17-4B97FD5939C5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
