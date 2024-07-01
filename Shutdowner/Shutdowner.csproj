@@ -16,6 +16,7 @@
     <PackageLicenseFile>LICENCE.md</PackageLicenseFile>
     <Description>A class that sends a command to shutdown a computer with its hostname or perform various other shutdown-related operations.</Description>
     <PackageTags>shutdown; shutdowner; smb; admin tool</PackageTags>
+    <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
   </PropertyGroup>
 
   <ItemGroup>
