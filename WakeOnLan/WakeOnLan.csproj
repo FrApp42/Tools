@@ -9,13 +9,21 @@
     <Title>WakeOnLan</Title>
     <Authors>Sikelio</Authors>
     <Company>FrenchyApps42</Company>
-    <PackageProjectUrl>https://github.com/FrApp42/Tools</PackageProjectUrl>
+    <PackageProjectUrl>https://github.com/FrApp42/Tools/tree/main/WakeOnLan</PackageProjectUrl>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <RepositoryUrl>https://github.com/FrApp42/Tools</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
+    <PackageLicenseFile>LICENCE.md</PackageLicenseFile>
+    <Description>A class that creates and send a magic packet for Wake On Lan.</Description>
+    <PackageTags>wakeonlan; wol; wake on lan; admin tool</PackageTags>
+    <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
   </PropertyGroup>
 
   <ItemGroup>
+    <None Update="LICENCE.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
     <None Update="README.md">
       <Pack>True</Pack>
       <PackagePath>\</PackagePath>

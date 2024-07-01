@@ -7,6 +7,10 @@ namespace FrenchyApps42.System.WakeOnLan
 {
     public partial class WakeOnLan
     {
+        /// <summary>
+        /// Sends a Wake-on-LAN magic packet to a specified MAC address.
+        /// </summary>
+        /// <param name="macAddress">The MAC address of the device to wake up.</param>
         public static async Task WakeUp(string macAddress)
         {
             byte[] magicPacket = WakeOnLan.BuildMagicPacket(macAddress);
@@ -53,6 +57,11 @@ namespace FrenchyApps42.System.WakeOnLan
 
         }
 
+        /// <summary>
+        /// Builds a Wake-on-LAN magic packet from a given MAC address.
+        /// </summary>
+        /// <param name="macAddress">The MAC address to include in the magic packet.</param>
+        /// <returns>A byte array representing the magic packet.</returns>
         public static byte[] BuildMagicPacket(string macAddress)
         {
             macAddress = MacFormatter().Replace(macAddress, "");
@@ -64,12 +73,22 @@ namespace FrenchyApps42.System.WakeOnLan
             return header.Concat(data).ToArray();
         }
 
+        /// <summary>
+        /// Sends a Wake-on-LAN magic packet to a specified multicast IP address.
+        /// </summary>
+        /// <param name="localIpAddress">The local IP address to use for sending the packet.</param>
+        /// <param name="multicastIpAddress">The multicast IP address to send the packet to.</param>
+        /// <param name="magicPacket">The magic packet to send.</param>
         public static async Task SendWakeOnLan(IPAddress localIpAddress, IPAddress multicastIpAddress, byte[] magicPacket)
         {
             UdpClient client = new(new IPEndPoint(localIpAddress, 0));
             await client.SendAsync(magicPacket, magicPacket.Length, new IPEndPoint(multicastIpAddress, 9));
         }
 
+        /// <summary>
+        /// Creates a regular expression to format MAC addresses by removing colons, hyphens, and spaces.
+        /// </summary>
+        /// <returns>A Regex object for formatting MAC addresses.</returns>
         [GeneratedRegex("[: -]")]
         private static partial Regex MacFormatter();
     }
