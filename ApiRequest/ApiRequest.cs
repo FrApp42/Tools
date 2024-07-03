@@ -126,43 +126,43 @@ namespace FrenchyApps42.Web.ApiRequest
 
         public async Task<Result<T>> Run<T>()
         {
-            StringBuilder builder = new(URL);
-            string fullUrl = URL;
+            StringBuilder builder = new(this.URL);
+            string fullUrl = this.URL;
 
             if (fullUrl.EndsWith("/"))
                 builder.Remove(fullUrl.Length - 1, 1);
 
-            if (QueryParams.Count() > 0)
+            if (this.QueryParams.Count() > 0)
             {
                 builder.Append("?");
 
-                for (int i = 0; i < QueryParams.Count(); i++)
+                for (int i = 0; i < this.QueryParams.Count(); i++)
                 {
-                    KeyValuePair<string, string> query = QueryParams.ElementAt(i);
+                    KeyValuePair<string, string> query = this.QueryParams.ElementAt(i);
                     builder.Append($"{query.Key}={query.Value}");
 
-                    if (!(i == QueryParams.Count() - 1))
+                    if (!(i == this.QueryParams.Count() - 1))
                         builder.Append("&");
                 }
             }
 
-            HttpRequestMessage request = new(Method, builder.ToString());
+            HttpRequestMessage request = new(this.Method, builder.ToString());
 
-            for (int i = 0; i <= this.RequestHeaders.Count(); i++)
+            for (int i = 0; i < this.RequestHeaders.Count(); i++)
             {
-                KeyValuePair<string, string> header = RequestHeaders.ElementAt(i);
+                KeyValuePair<string, string> header = this.RequestHeaders.ElementAt(i);
                 request.Headers.Add(header.Key, header.Value);
             }
 
-            if (DocumentBody != null)
+            if (this.DocumentBody != null)
             {
                 MultipartFormDataContent content = new();
-                ByteArrayContent fileContent = new(DocumentBody);
+                ByteArrayContent fileContent = new(this.DocumentBody);
 
                 fileContent.Headers.ContentDisposition = new ContentDispositionHeaderValue("binary")
                 {
                     Name = "file",
-                    FileName = DocumentFileName
+                    FileName = this.DocumentFileName
                 };
 
                 content.Add(fileContent);
@@ -170,9 +170,9 @@ namespace FrenchyApps42.Web.ApiRequest
                 request.Content = content;
                 request.Content.Headers.ContentType = new(this.ContentType);
             }
-            else if (Body != null)
+            else if (this.Body != null)
             {
-                string json = JsonConvert.SerializeObject(Body, _jsonSerializerSettings);
+                string json = JsonConvert.SerializeObject(this.Body, _jsonSerializerSettings);
                 request.Content = new StringContent(json, Encoding.UTF8, "application/json");
                 request.Content.Headers.ContentType = new("application/json");
             }
