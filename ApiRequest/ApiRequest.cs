@@ -23,7 +23,7 @@ namespace FrenchyApps42.Web.ApiRequest
         public string DocumentFileName { get; private set; } = null;
         public string ContentType { get; private set; } = null;
 
-        private JsonSerializerSettings _jsonSerializerSettings = new()
+        private readonly JsonSerializerSettings _jsonSerializerSettings = new()
         {
             ContractResolver = new JsonPropAttrResolver(),
             Formatting = Formatting.Indented
@@ -124,7 +124,55 @@ namespace FrenchyApps42.Web.ApiRequest
             return this;
         }
 
-        public async Task<Result<T>> Run<T>()
+        public async Task<Result<T>> RunObject<T>()
+        {
+            HttpRequestMessage request = this.BuildBaseRequest();
+
+            if (this.Body != null)
+            {
+                string json = JsonConvert.SerializeObject(this.Body, _jsonSerializerSettings);
+                request.Content = new StringContent(json, Encoding.UTF8, "application/json");
+                request.Content.Headers.ContentType = new("application/json");
+            }
+
+            Result<T> result = await this.ProcessRequest<T>(request);
+
+            return result;
+        }
+
+        public async Task<Result<T>> RunDocument<T>()
+        {
+            HttpRequestMessage request = this.BuildBaseRequest();
+
+            if (this.DocumentBody == null)
+            {
+                return new Result<T>()
+                {
+                    Error = "Document cannot be null",
+                    StatusCode = 500,
+                };
+            }
+
+            MultipartFormDataContent content = new();
+            ByteArrayContent fileContent = new(this.DocumentBody);
+
+            fileContent.Headers.ContentDisposition = new ContentDispositionHeaderValue("binary")
+            {
+                Name = "file",
+                FileName = this.DocumentFileName
+            };
+
+            content.Add(fileContent);
+
+            request.Content = content;
+            request.Content.Headers.ContentType = new(this.ContentType);
+
+            Result<T> result = await this.ProcessRequest<T>(request);
+
+            return result;
+        }
+
+        private string BuildUrl()
         {
             StringBuilder builder = new(this.URL);
             string fullUrl = this.URL;
@@ -146,7 +194,12 @@ namespace FrenchyApps42.Web.ApiRequest
                 }
             }
 
-            HttpRequestMessage request = new(this.Method, builder.ToString());
+            return builder.ToString();
+        }
+
+        private HttpRequestMessage BuildBaseRequest()
+        {
+            HttpRequestMessage request = new(this.Method, this.BuildUrl());
 
             for (int i = 0; i < this.RequestHeaders.Count(); i++)
             {
@@ -154,29 +207,11 @@ namespace FrenchyApps42.Web.ApiRequest
                 request.Headers.Add(header.Key, header.Value);
             }
 
-            if (this.DocumentBody != null)
-            {
-                MultipartFormDataContent content = new();
-                ByteArrayContent fileContent = new(this.DocumentBody);
+            return request;
+        }
 
-                fileContent.Headers.ContentDisposition = new ContentDispositionHeaderValue("binary")
-                {
-                    Name = "file",
-                    FileName = this.DocumentFileName
-                };
-
-                content.Add(fileContent);
-
-                request.Content = content;
-                request.Content.Headers.ContentType = new(this.ContentType);
-            }
-            else if (this.Body != null)
-            {
-                string json = JsonConvert.SerializeObject(this.Body, _jsonSerializerSettings);
-                request.Content = new StringContent(json, Encoding.UTF8, "application/json");
-                request.Content.Headers.ContentType = new("application/json");
-            }
-
+        private async Task<Result<T>> ProcessRequest<T>(HttpRequestMessage request)
+        {
             HttpResponseMessage response;
             Result<T> result = new();
 
