@@ -1,15 +1,17 @@
 ﻿namespace FrenchyApps42.Web.ApiRequest.Interfaces
 {
-    public class IApiRequest
+    public interface IApiRequest
     {
-        public string URL { get; private set; }
-        public HttpMethod Method { get; private set; }
-        public Dictionary<string, string> RequestHeaders { get; private set; }
-        public Dictionary<string, string> ContentHeaders { get; private set; }
-        public Dictionary<string, string> QueryParams { get; private set; }
-        public object Body { get; private set; }
-        public byte[] DocumentBody { get; private set; }
-        public string DocumentFileName { get; private set; }
-        public string ContentType { get; private set; }
+        string URL { get; }
+        HttpMethod Method { get; }
+
+        Dictionary<string, string> RequestHeaders { get; }
+        Dictionary<string, string> ContentHeaders { get; }
+        Dictionary<string, string> QueryParams { get; }
+
+        object Body { get; }
+        byte[] DocumentBody { get; }
+        string DocumentFileName { get; }
+        string ContentType { get; }
     }
 }
