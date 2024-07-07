@@ -214,12 +214,16 @@ namespace FrenchyApps42.System.Shutdowner
         /// If ping is enabled, it will try to ping the machine. If the ping if unsuccesful it returns null.
         /// </summary>
         /// <returns>A tuple containing the exit code and an error message if an error occurred.</returns>
-        public async Task<CommandResult?> Run()
+        public async Task<CommandResult> Run()
         {
             if (this.PingEnabled)
             {
                 if (this.SendPing() == false)
-                    return null;
+                    return new CommandResult()
+                    {
+                        ErrorMessage = "Machine is unreachable.",
+                        ExitCode = 1
+                    };
             }
 
             return await Task.Run(() =>
