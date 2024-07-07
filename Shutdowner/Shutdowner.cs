@@ -1,6 +1,7 @@
 ﻿using FrenchyApps42.System.Shutdowner.Helpers;
 using FrenchyApps42.System.Shutdowner.Models;
 using System.Diagnostics;
+using System.Net.NetworkInformation;
 using System.Text;
 
 namespace FrenchyApps42.System.Shutdowner
@@ -13,7 +14,22 @@ namespace FrenchyApps42.System.Shutdowner
         private readonly StringBuilder _commandBuilder;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Shutdowner"/> class.
+        /// Machine hostname.
+        /// </summary>
+        private string Hostname = "";
+
+        /// <summary>
+        /// Will the machine be pinged before shutdowning it?
+        /// </summary>
+        private bool PingEnabled = false;
+
+        /// <summary>
+        /// Timeout of machine ping.
+        /// </summary>
+        private int PingTimeout = 5;
+
+        /// <summary>
+        /// Default constructor
         /// </summary>
         public Shutdowner()
         {
@@ -143,6 +159,7 @@ namespace FrenchyApps42.System.Shutdowner
         /// <returns>Instance</returns>
         public Shutdowner SetMachine(string machineName)
         {
+            this.Hostname = machineName;
             this.AddArgument(ShutdownArgs.MachineArg, machineName);
             return this;
         }
@@ -178,11 +195,33 @@ namespace FrenchyApps42.System.Shutdowner
         }
 
         /// <summary>
+        /// Enables the ping before running the shutdown command.
+        /// </summary>
+        /// <param name="timeout">Timeout of ping to the machine</param>
+        /// <returns></returns>
+        public Shutdowner PingBefore(int timeout = 5)
+        {
+            if (timeout < 0) timeout = 0;
+
+            this.PingEnabled = true;
+            this.PingTimeout = timeout;
+
+            return this;
+        }
+
+        /// <summary>
         /// Runs the built shutdown command.
+        /// If ping is enabled, it will try to ping the machine. If the ping if unsuccesful it returns null.
         /// </summary>
         /// <returns>A tuple containing the exit code and an error message if an error occurred.</returns>
-        public async Task<CommandResult> Run()
+        public async Task<CommandResult?> Run()
         {
+            if (this.PingEnabled)
+            {
+                if (this.SendPing() == false)
+                    return null;
+            }
+
             return await Task.Run(() =>
             {
                 ProcessStartInfo processStartInfo = new("cmd.exe", this._commandBuilder.ToString())
@@ -213,7 +252,33 @@ namespace FrenchyApps42.System.Shutdowner
         }
 
         /// <summary>
-        /// Displays the command of the current instance
+        /// Sends a ping to the machine.
+        /// </summary>
+        /// <returns>A bool depending of the success of the ping</returns>
+        private bool SendPing()
+        {
+            if (string.IsNullOrEmpty(this.Hostname))
+                return false;
+
+            Ping sender = new();
+            PingOptions options = new()
+            {
+                DontFragment = true,
+            };
+
+            string data = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
+            byte[] buffer = Encoding.ASCII.GetBytes(data);
+
+            PingReply reply = sender.Send(this.Hostname, this.PingTimeout, buffer, options);
+
+            if (reply.Status == IPStatus.Success)
+                return true;
+
+            return false;
+        }
+
+        /// <summary>
+        /// Displays the command of the current command.
         /// </summary>
         /// <returns>Current built command</returns>
         public string Display()
