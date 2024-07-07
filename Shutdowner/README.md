@@ -20,12 +20,12 @@ Authors:
 * Specify target computer by hostname
 * Set a timeout for the shutdown
 * Add a custom reason for the shutdown
+* Ping before running command
 
 ## Usage
 
 ```cs
 using FrenchyApps42.System.Shutdowner;
-using FrenchyApps42.System.Shutdowner.Models;
 
 namespace Program
 {
