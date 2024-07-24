@@ -3,15 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.9.34728.123
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WakeOnLan", "WakeOnLan\WakeOnLan.csproj", "{F158085E-AA44-450C-B628-8F51B84063D8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "System", "System\System.csproj", "{8083ADC6-AFB3-407B-A54C-50C8E8976142}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ApiRequest", "ApiRequest\ApiRequest.csproj", "{059E59CA-1E92-4268-9518-A3B16D08990D}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shutdowner", "Shutdowner\Shutdowner.csproj", "{6A20A86C-2EF7-4399-AC17-4B97FD5939C5}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "System", "System\System.csproj", "{8083ADC6-AFB3-407B-A54C-50C8E8976142}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web", "Web\Web.csproj", "{3872357E-B751-4C1B-AFD7-E4883E2FBB4C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Web", "Web\Web.csproj", "{3872357E-B751-4C1B-AFD7-E4883E2FBB4C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -19,18 +13,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{F158085E-AA44-450C-B628-8F51B84063D8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F158085E-AA44-450C-B628-8F51B84063D8}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F158085E-AA44-450C-B628-8F51B84063D8}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F158085E-AA44-450C-B628-8F51B84063D8}.Release|Any CPU.Build.0 = Release|Any CPU
-		{059E59CA-1E92-4268-9518-A3B16D08990D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{059E59CA-1E92-4268-9518-A3B16D08990D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{059E59CA-1E92-4268-9518-A3B16D08990D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{059E59CA-1E92-4268-9518-A3B16D08990D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{6A20A86C-2EF7-4399-AC17-4B97FD5939C5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6A20A86C-2EF7-4399-AC17-4B97FD5939C5}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6A20A86C-2EF7-4399-AC17-4B97FD5939C5}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6A20A86C-2EF7-4399-AC17-4B97FD5939C5}.Release|Any CPU.Build.0 = Release|Any CPU
 		{8083ADC6-AFB3-407B-A54C-50C8E8976142}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{8083ADC6-AFB3-407B-A54C-50C8E8976142}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8083ADC6-AFB3-407B-A54C-50C8E8976142}.Release|Any CPU.ActiveCfg = Release|Any CPU
