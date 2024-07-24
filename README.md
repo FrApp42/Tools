@@ -1,9 +1,21 @@
-# Frenchy Apps 42 Tools
+# Frenchy Apps 42 - Tools
 
 This repos contains tool classes in C# for multiple types of usage.
 
-## Available classes
+## Available tools
 
-* [ApiRequest](https://github.com/FrApp42/Tools/tree/main/ApiRequest)
-* [Shutdowner](https://github.com/FrApp42/Tools/tree/main/Shutdowner) - [GPLv3](https://github.com/FrApp42/Tools/blob/main/Shutdowner/LICENCE.md)
-* [WakeOnLan](https://github.com/FrApp42/Tools/tree/main/WakeOnLan) - [GPLv3](https://github.com/FrApp42/Tools/blob/main/WakeOnLan/LICENCE.md)
+* Request
+  * Makes API requests
+  * Namespace: `FrApps42.Web.API`
+
+* IsOnline
+  * Checks if a device is online
+  * Namespace: `FrApps42.System.Net`
+
+* Shutdown
+  * Shutdowns a device with SMB
+  * Namespace: `FrApps42.System.Computer.Shutdown`
+
+* WakeOnLan
+  * Waked up a device from it's MAC address
+  * Namespace: `FrApps42.System.Net`
