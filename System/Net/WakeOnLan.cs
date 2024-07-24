@@ -13,7 +13,7 @@ namespace FrApps42.System.Net
         /// <param name="macAddress">The MAC address of the device to wake up.</param>
         public static async Task WakeUp(string macAddress)
         {
-            byte[] magicPacket = WakeOnLan.BuildMagicPacket(macAddress);
+            byte[] magicPacket = BuildMagicPacket(macAddress);
 
             IEnumerable<NetworkInterface> networkInterfaces = NetworkInterface
                 .GetAllNetworkInterfaces()
@@ -36,7 +36,7 @@ namespace FrApps42.System.Net
 
                         if (unicastIPAddressInformation != null)
                         {
-                            await WakeOnLan.SendWakeOnLan(unicastIPAddressInformation.Address, multicastIpAddress, magicPacket);
+                            await SendWakeOnLan(unicastIPAddressInformation.Address, multicastIpAddress, magicPacket);
                         }
                     }
                     else if (multicastIpAddress.ToString().Equals("224.0.0.1"))
@@ -49,7 +49,7 @@ namespace FrApps42.System.Net
 
                         if (unicastIPAddressInformation != null)
                         {
-                            await WakeOnLan.SendWakeOnLan(unicastIPAddressInformation.Address, multicastIpAddress, magicPacket);
+                            await SendWakeOnLan(unicastIPAddressInformation.Address, multicastIpAddress, magicPacket);
                         }
                     }
                 }

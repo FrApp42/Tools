@@ -42,7 +42,6 @@ namespace FrApps42.System.Computer.Shutdown
         /// <param name="hostname"></param>
         public Shutdown(string hostname): this()
         {
-
             SetMachine(hostname);
         }
 
@@ -59,7 +58,7 @@ namespace FrApps42.System.Computer.Shutdown
         /// <param name="value">Optional value associated with the argument.</param>
         private void AddArgument(string arg, string value = "")
         {
-            string currentCommand = this._commandBuilder.ToString();
+            string currentCommand = _commandBuilder.ToString();
 
             // Prevent adding /l if /m or /t is already present
             if (arg == ShutdownArgs.LogoutArg && (currentCommand.Contains(ShutdownArgs.MachineArg) || currentCommand.Contains(ShutdownArgs.TimeoutArg)))
@@ -69,15 +68,15 @@ namespace FrApps42.System.Computer.Shutdown
             if ((arg == ShutdownArgs.MachineArg || arg == ShutdownArgs.TimeoutArg) && currentCommand.Contains(ShutdownArgs.LogoutArg))
                 return;
 
-            if (!this._commandBuilder.ToString().Contains(arg))
+            if (!_commandBuilder.ToString().Contains(arg))
             {
                 if (string.IsNullOrEmpty(value))
                 {
-                    this._commandBuilder.Append($" {arg}");
+                    _commandBuilder.Append($" {arg}");
                 }
                 else
                 {
-                    this._commandBuilder.Append($" {arg} {value}");
+                    _commandBuilder.Append($" {arg} {value}");
                 }
             }
         }
@@ -88,7 +87,7 @@ namespace FrApps42.System.Computer.Shutdown
         /// <returns>Current built command</returns>
         public string GetCommand()
         {
-            return this._commandBuilder.ToString();
+            return _commandBuilder.ToString();
         }
 
         /// <summary>
@@ -108,7 +107,7 @@ namespace FrApps42.System.Computer.Shutdown
         /// <returns>Instance</returns>
         public Shutdown ShutdownComputer()
         {
-            this.AddArgument(ShutdownArgs.ShutdownArg);
+            AddArgument(ShutdownArgs.ShutdownArg);
             return this;
         }
 
@@ -120,7 +119,7 @@ namespace FrApps42.System.Computer.Shutdown
         /// <returns>Instance</returns>
         public Shutdown ShutdownAndSignOn()
         {
-            this.AddArgument(ShutdownArgs.ShutdownAndSignOnArg);
+            AddArgument(ShutdownArgs.ShutdownAndSignOnArg);
             return this;
         }
 
@@ -130,7 +129,7 @@ namespace FrApps42.System.Computer.Shutdown
         /// <returns>Instance</returns>
         public Shutdown Reboot()
         {
-            this.AddArgument(ShutdownArgs.RebootArg);
+            AddArgument(ShutdownArgs.RebootArg);
             return this;
         }
 
@@ -141,7 +140,7 @@ namespace FrApps42.System.Computer.Shutdown
         /// <returns>Instance</returns>
         public Shutdown Hibernate()
         {
-            this.AddArgument(ShutdownArgs.HibernateArg);
+            AddArgument(ShutdownArgs.HibernateArg);
             return this;
         }
 
@@ -151,7 +150,7 @@ namespace FrApps42.System.Computer.Shutdown
         /// <returns>Instance</returns>
         public Shutdown Soft()
         {
-            this.AddArgument(ShutdownArgs.SoftArg);
+            AddArgument(ShutdownArgs.SoftArg);
             return this;
         }
 
@@ -162,7 +161,7 @@ namespace FrApps42.System.Computer.Shutdown
         /// <returns>Instance</returns>
         public Shutdown OpenBootOptions()
         {
-            this.AddArgument(ShutdownArgs.BootOptionsArg);
+            AddArgument(ShutdownArgs.BootOptionsArg);
             return this;
         }
 
@@ -172,7 +171,7 @@ namespace FrApps42.System.Computer.Shutdown
         /// <returns></returns>
         public Shutdown ForceShutdown()
         {
-            this.AddArgument(ShutdownArgs.ForceArg);
+            AddArgument(ShutdownArgs.ForceArg);
             return this;
         }
 
@@ -200,7 +199,7 @@ namespace FrApps42.System.Computer.Shutdown
             if (time < 0) time = 0;
             if (time > 315360000) time = 315360000;
 
-            this.AddArgument(ShutdownArgs.TimeoutArg, time.ToString());
+            AddArgument(ShutdownArgs.TimeoutArg, time.ToString());
             return this;
         }
 
@@ -215,7 +214,7 @@ namespace FrApps42.System.Computer.Shutdown
             if (comment.Length > 512)
                 comment = comment.Substring(0, 512);
 
-            this.AddArgument(ShutdownArgs.CommentArg, $"\"{comment}\"");
+            AddArgument(ShutdownArgs.CommentArg, $"\"{comment}\"");
             return this;
         }
 

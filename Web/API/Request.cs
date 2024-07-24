@@ -7,7 +7,6 @@ namespace FrApps42.Web.API
 {
     public class Request
     {
-
         #region Variables
         /// <summary>
         /// The HTTP client used to send requests.
