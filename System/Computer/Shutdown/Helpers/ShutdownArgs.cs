@@ -1,4 +1,4 @@
-﻿namespace FrApps42.System.Computer.Shutdown.Helpers
+﻿namespace FrApp42.System.Computer.Shutdown.Helpers
 {
     internal sealed class ShutdownArgs
     {

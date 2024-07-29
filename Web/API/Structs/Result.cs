@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace FrApps42.Web.API
+﻿namespace FrApp42.Web.API
 {
     public struct Result<T>
     {
@@ -14,9 +8,9 @@ namespace FrApps42.Web.API
 
         public Result(int statusCode, T value, string error = "")
         {
-            this.StatusCode = statusCode;
-            this.Value = value;
-            this.Error = error;
+            StatusCode = statusCode;
+            Value = value;
+            Error = error;
         }
     }
 }

@@ -4,22 +4,38 @@
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <AssemblyName>FrApps42.$(MSBuildProjectName)</AssemblyName>
-    <RootNamespace>FrApps42.$(MSBuildProjectName.Replace(" ", "_"))</RootNamespace>
-    <Title>FrApps42 Web</Title>
+    <AssemblyName>FrApp42.$(MSBuildProjectName)</AssemblyName>
+    <RootNamespace>FrApp42.$(MSBuildProjectName.Replace(" ", "_"))</RootNamespace>
+    <Title>FrApp42 Web</Title>
     <Authors>FrApp42</Authors>
     <Copyright>GPLv3</Copyright>
     <PackageProjectUrl>https://github.com/FrApp42/Tools</PackageProjectUrl>
     <RepositoryUrl>https://github.com/FrApp42/Tools.git</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
+	<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <Description>A collection of classes for web operations</Description>
+	<PackageTags>web;tools</PackageTags>
+	<PackageLicenseFile>LICENCE.md</PackageLicenseFile>
+	<PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
+	<PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="API\Interfaces\" />
+    <None Include="..\LICENCE.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="README.md">
+      <PackagePath>\</PackagePath>
+      <Pack>True</Pack>
+    </None>
   </ItemGroup>
 
 </Project>

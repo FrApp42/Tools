@@ -1,13 +1,12 @@
-﻿using FrApps42.Web.API.Helpers;
+﻿using FrApp42.Web.API.Helpers;
 using Newtonsoft.Json;
 using System.Net.Http.Headers;
 using System.Text;
 
-namespace FrApps42.Web.API
+namespace FrApp42.Web.API
 {
     public class Request
     {
-
         #region Variables
         /// <summary>
         /// The HTTP client used to send requests.

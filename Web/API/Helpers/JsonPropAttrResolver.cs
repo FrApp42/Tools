@@ -3,7 +3,7 @@ using Newtonsoft.Json.Serialization;
 using System.Reflection;
 using System.Text.Json.Serialization;
 
-namespace FrApps42.Web.API.Helpers
+namespace FrApp42.Web.API.Helpers
 {
     internal sealed class JsonPropAttrResolver : DefaultContractResolver
     {
