@@ -12,6 +12,9 @@
     <PackageProjectUrl>https://github.com/FrApp42/Tools</PackageProjectUrl>
     <RepositoryUrl>https://github.com/FrApp42/Tools.git</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <Description>A collection of classes for system operations</Description>
+    <PackageTags>system</PackageTags>
   </PropertyGroup>
 
 </Project>

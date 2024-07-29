@@ -7,11 +7,14 @@
     <AssemblyName>FrApps42.$(MSBuildProjectName)</AssemblyName>
     <RootNamespace>FrApps42.$(MSBuildProjectName.Replace(" ", "_"))</RootNamespace>
     <Title>FrApps42 Web</Title>
-    <Authors>FrApp42</Authors>
+    <Authors>FrApps42</Authors>
     <Copyright>GPLv3</Copyright>
     <PackageProjectUrl>https://github.com/FrApp42/Tools</PackageProjectUrl>
     <RepositoryUrl>https://github.com/FrApp42/Tools.git</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
+	<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <Description>A collection of classes for web operations</Description>
+	<PackageTags>web</PackageTags>
   </PropertyGroup>
 
   <ItemGroup>
