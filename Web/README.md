@@ -15,29 +15,29 @@ Install-Package FrApp42.Net
 
 ```csharp
 using namespace FrApp42.Web.API;
-﻿using System.Text.Json.Serialization;
+using System.Text.Json.Serialization;
 
 string url = "your-url";
 
 Request request = new(url);
 request
-	.AddHeader("key", "value")
-	.AcceptJson()
+    .AddHeader("key", "value")
+    .AcceptJson()
 
 Result<MyModel> result = await request.Run<MyModel>();
 
 if (result.StatusCode == 200 && result.Value != null)
 {
-	Console.WriteLine(result.Value.Name);
-	Console.WriteLine(result.Value.Description);
+    Console.WriteLine(result.Value.Name);
+    Console.WriteLine(result.Value.Description);
 }
 
 class MyModel
 {
-	[JsonPropertyName("name")]
-	public string Name { get; set; }
+    [JsonPropertyName("name")]
+    public string Name { get; set; }
 
-	[JsonPropertyName("description")]
-	public string Description { get; set; }
+    [JsonPropertyName("description")]
+    public string Description { get; set; }
 }
 ```

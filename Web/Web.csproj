@@ -14,7 +14,7 @@
     <RepositoryType>git</RepositoryType>
 	<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <Description>A collection of classes for web operations</Description>
-	<PackageTags>web</PackageTags>
+	<PackageTags>web;tools</PackageTags>
 	<PackageLicenseFile>LICENCE.md</PackageLicenseFile>
 	<PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
 	<PackageReadmeFile>README.md</PackageReadmeFile>
