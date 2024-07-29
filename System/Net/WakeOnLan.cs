@@ -3,7 +3,7 @@ using System.Net.Sockets;
 using System.Net;
 using System.Text.RegularExpressions;
 
-namespace FrApps42.System.Net
+namespace FrApp42.System.Net
 {
     public partial class WakeOnLan
     {

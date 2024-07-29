@@ -1,10 +1,10 @@
-﻿using FrApps42.System.Computer.Shutdown.Helpers;
-using FrApps42.System.Net;
+﻿using FrApp42.System.Computer.Shutdown.Helpers;
+using FrApp42.System.Net;
 using System.Diagnostics;
 using System.Net;
 using System.Text;
 
-namespace FrApps42.System.Computer.Shutdown
+namespace FrApp42.System.Computer.Shutdown
 {
     public partial class Shutdown
     {

@@ -1,4 +1,4 @@
-﻿namespace FrApps42.Web.API
+﻿namespace FrApp42.Web.API
 {
     public struct Result<T>
     {

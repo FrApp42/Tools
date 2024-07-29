@@ -1,4 +1,4 @@
-﻿namespace FrApps42.System.Computer.Shutdown
+﻿namespace FrApp42.System.Computer.Shutdown
 {
     public class ShutdownResult
     {

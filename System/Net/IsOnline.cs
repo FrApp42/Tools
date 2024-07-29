@@ -2,7 +2,7 @@
 using System.Net.NetworkInformation;
 using System.Text;
 
-namespace FrApps42.System.Net
+namespace FrApp42.System.Net
 {
     public class IsOnline
     {
