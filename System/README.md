@@ -35,10 +35,10 @@ string hostname = "your-hostname";
 
 Shutdown shutdown = new();
 shutdown
-	.ShutdownComputer()
-	.Soft()
-	.SetTimeOut(5)
-	.SetComment("Custom reason");
+    .ShutdownComputer()
+    .Soft()
+    .SetTimeOut(5)
+    .SetComment("Custom reason");
 
 ShutdownResult shutdownResult = await shutdown.Run();
 ```
