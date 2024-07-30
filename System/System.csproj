@@ -7,7 +7,7 @@
     <AssemblyName>FrApp42.$(MSBuildProjectName)</AssemblyName>
     <RootNamespace>FrApp42.$(MSBuildProjectName.Replace(" ", "_"))</RootNamespace>
     <Title>FrApp42 System</Title>
-    <Authors>FrApp42</Authors>
+    <Authors>FrenchyApps42, Sikelio, AnthoDingo</Authors>
     <Copyright>GPLv3</Copyright>
     <PackageProjectUrl>https://github.com/FrApp42/Tools</PackageProjectUrl>
     <RepositoryUrl>https://github.com/FrApp42/Tools.git</RepositoryUrl>
@@ -18,10 +18,16 @@
     <PackageLicenseFile>LICENCE.md</PackageLicenseFile>
     <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
     <PackageReadmeFile>README.md</PackageReadmeFile>
+    <Company>FrenchyApps42</Company>
+    <PackageIcon>Logo.png</PackageIcon>
   </PropertyGroup>
 
   <ItemGroup>
     <None Include="..\LICENCE.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+    <None Include="..\Logo.png">
       <Pack>True</Pack>
       <PackagePath>\</PackagePath>
     </None>
