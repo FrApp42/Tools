@@ -14,7 +14,7 @@ Install-Package FrApp42.Net
 ### Make an API request
 
 ```csharp
-using namespace FrApp42.Web.API;
+using FrApp42.Web.API;
 using System.Text.Json.Serialization;
 
 string url = "your-url";

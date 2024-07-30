@@ -16,7 +16,7 @@ Install-Package FrApp42.System
 ### Check if device is online
 
 ```csharp
-using namespace FrApp42.System.Net;
+using FrApp42.System.Net;
 
 string address = "your-address";
 string timeout = 5;
@@ -29,7 +29,7 @@ bool isOnline = online.Check();
 ### Shutdown through SMB (Windows Only)
 
 ```csharp
-using namespace FrApp42.System.Computer.Shutdown;
+using FrApp42.System.Computer.Shutdown;
 
 string hostname = "your-hostname";
 
@@ -46,7 +46,7 @@ ShutdownResult shutdownResult = await shutdown.Run();
 ### Wake up a computer (WOL)
 
 ```csharp
-using namespace FrApp42.System.Net;
+using FrApp42.System.Net;
 
 string macAddress = "your-mac-address";
 
