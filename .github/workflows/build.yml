@@ -20,9 +20,6 @@ jobs:
     - name: Restore dependencies
       run: dotnet restore
 
-    - name: Grant network capabilities
-      run: sudo setcap cap_net_raw=ep /usr/bin/ping
-
     - name: Build
       run: dotnet build --no-restore
 
