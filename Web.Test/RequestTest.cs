@@ -13,6 +13,11 @@ namespace Web.Test
 		private const string TestPostUrl = "https://httpbin.org/post";
 		private const string TestPutUrl = "https://httpbin.org/put";
 
+		private const string TestGetJpegImageUrl = "https://httpbin.org/image/jpeg";
+		private const string TestGetPngImageUrl = "https://httpbin.org/image/png";
+		private const string TestGetSvgImageUrl = "https://httpbin.org/image/svg";
+		private const string TestGetWebpImageUrl = "https://httpbin.org/image/webp";
+
 		[TestMethod]
 		public async Task SendGetRequest()
 		{
@@ -75,6 +80,41 @@ namespace Web.Test
 			StringAssert.Contains(result.Value.Data, "Hello world", "File content should contain 'Hello World'");
 		}
 
+		[TestMethod]
+		public async Task SendJpegImageRequest()
+		{
+			await SendImageRequest("image/jpeg", "jpeg");
+		}
+
+		[TestMethod]
+		public async Task SendPngImageRequest()
+		{
+			await SendImageRequest("image/png", "png");
+		}
+
+		[TestMethod]
+		public async Task SendSvgImageRequest()
+		{
+			await SendImageRequest("image/svg+xml", "svg");
+		}
+
+		[TestMethod]
+		public async Task SendWebpImageRequest()
+		{
+			await SendImageRequest("image/webp", "webp");
+		}
+
+		private async Task SendImageRequest(string acceptType, string imageType)
+		{
+			Request request = new(TestGetWebpImageUrl, HttpMethod.Get);
+			request
+				.AddHeader("Accept", acceptType);
+
+			Result<byte[]> result = await request.RunGetBytes();
+
+			AssertImageResponse(result, imageType);
+		}
+
 		private void AssertResponse<T>(Result<T> result, string expectedUrl) where T : class
 		{
 			Assert.AreEqual(200, result.StatusCode, "Status code should be 200");
@@ -86,6 +126,14 @@ namespace Web.Test
 			dynamic headers = response.Headers;
 			Assert.IsNotNull(headers, "Headers should not be null");
 			Assert.AreEqual("httpbin.org", headers.Host, "Host header should be 'httpbin.org'");
+		}
+
+		private void AssertImageResponse(Result<byte[]> result, string imgType)
+		{
+			Assert.AreEqual(200, result.StatusCode, "Status code should be 200");
+			Assert.IsNotNull(result.Value, "Response value should not be null");
+			Assert.IsTrue(result.Value.Length > 0, "Image data should not be empty");
+			File.WriteAllBytes($"test_image.{imgType}", result.Value);
 		}
 	}
 }
