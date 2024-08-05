@@ -22,7 +22,7 @@ string url = "your-url";
 Request request = new(url);
 request
     .AddHeader("key", "value")
-    .AcceptJson()
+    .AcceptJson();
 
 Result<MyModel> result = await request.Run<MyModel>();
 
@@ -39,5 +39,23 @@ class MyModel
 
     [JsonPropertyName("description")]
     public string Description { get; set; }
+}
+```
+
+### Get an image
+```csharp
+using FrApp42.Web.API;
+
+string url = "your-url";
+
+Request request = new(url);
+request
+    .AddHeader("Accept", "image/png");
+
+Result<byte[]> result = await request.RunGetBytes();
+
+if (result.StatusCode == 200 && result.Value != null)
+{
+    File.WriteAllBytes($"image.png", result.Value);
 }
 ```

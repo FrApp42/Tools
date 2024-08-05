@@ -90,6 +90,6 @@ namespace FrApp42.System.Net
         /// </summary>
         /// <returns>A Regex object for formatting MAC addresses.</returns>
         [GeneratedRegex("[: -]")]
-        private static partial Regex MacFormatter();
+        public static partial Regex MacFormatter();
     }
 }

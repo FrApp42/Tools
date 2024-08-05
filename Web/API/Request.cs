@@ -251,12 +251,12 @@ namespace FrApp42.Web.API
             return result;
         }
 
-        /// <summary>
-        /// Executes the HTTP request with the binary document content included.
-        /// </summary>
-        /// <typeparam name="T">The type of the response expected from the request.</typeparam>
-        /// <returns>A Result object containing the response.</returns>
-        public async Task<Result<T>> RunDocument<T>()
+		/// <summary>
+		/// Executes the HTTP request and returns the response content as a byte array.
+		/// </summary>
+		/// <typeparam name="T">The type of the response expected from the request.</typeparam>
+		/// <returns>A Result object containing the response.</returns>
+		public async Task<Result<T>> RunDocument<T>()
         {
             HttpRequestMessage request = BuildBaseRequest();
 
@@ -287,6 +287,42 @@ namespace FrApp42.Web.API
 
             return result;
         }
+
+		/// <summary>
+		/// Executes the HTTP request that will return a byte array.
+		/// </summary>
+		/// <returns>
+		/// A <see cref="Result{T}"/> object containing the response content as a byte array,
+		/// the status code of the response, and any error message if the request fails.
+		/// </returns>
+		public async Task<Result<byte[]>> RunGetBytes()
+        {
+			HttpRequestMessage request = BuildBaseRequest();
+			Result<byte[]> result = new();
+
+            try
+            {
+                HttpResponseMessage response = await _httpClient.SendAsync(request);
+
+                result.StatusCode = (int)response.StatusCode;
+
+				if (response.IsSuccessStatusCode)
+				{
+					result.Value = await response.Content.ReadAsByteArrayAsync();
+				}
+				else
+				{
+					result.Error = await response.Content.ReadAsStringAsync();
+				}
+			}
+            catch (Exception ex)
+            {
+				result.StatusCode = 500;
+				result.Error = ex.Message;
+			}
+
+            return result;
+		}
 
         #endregion
 
