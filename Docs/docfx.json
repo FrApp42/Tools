@@ -1,0 +1,59 @@
+{
+  "metadata": [
+    {
+      "src": [
+        {
+          "src": "../System",
+          "files": [
+            "**/*.csproj"
+          ]
+        }        
+      ],
+      "dest": "api.System"
+    },
+    {
+      "src": [
+        {
+          "src": "../Web",
+          "files": [
+            "**/*.csproj"
+          ]
+        }
+        
+      ],
+      "dest": "api.Web"
+    }
+  ],
+  "build": {
+    "content": [
+      {
+        "files": [
+          "**/*.{md,yml}"
+        ],
+        "exclude": [
+          "_site/**"
+        ]
+      }
+    ],
+    "resource": [
+      {
+        "files": [
+          "images/**"
+        ]
+      }
+    ],
+    "output": "_site",
+    "template": [
+      "default",
+      "modern",
+      "templates/material"
+    ],
+    "globalMetadata": {
+      "_appName": "Tools",
+      "_appTitle": "Tools",
+      "_appLogoPath": "images/logo.png",
+      "_enableSearch": true,
+      "pdf": false
+    }
+  }
+}

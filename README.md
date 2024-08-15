@@ -2,20 +2,17 @@
 
 This repos contains tool classes in C# for multiple types of usage.
 
-## Available tools
+[Documentation](https://frapp42.github.io/website/docs/tools/)
 
-* Request
-  * Makes API requests
-  * Namespace: `FrApps42.Web.API`
+## Available packages
 
-* IsOnline
-  * Checks if a device is online
-  * Namespace: `FrApps42.System.Net`
+* `FrApp42.System` - [Link](https://www.nuget.org/packages/FrApp42.System)
+  * IsOnline: Ping a device with it's hostname or ip address to check if it's online
+  * Shutdown: Shutdown a device through SMB with it's hostname or ip address. It only work for Windows devices.
+  * WakeOnLan: Power on a device with it mac address.
+* `FrApp42.Web` - [Link](https://www.nuget.org/packages/FrApp42.Web)
+  * Request: Make API request for any of your C# projects. ⚠️ *SOAP requests are not supported.* ⚠️
 
-* Shutdown
-  * Shutdowns a device with SMB
-  * Namespace: `FrApps42.System.Computer.Shutdown`
+## Licence
 
-* WakeOnLan
-  * Waked up a device from it's MAC address
-  * Namespace: `FrApps42.System.Net`
+This project is under GPLv3 licence
