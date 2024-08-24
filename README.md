@@ -7,11 +7,17 @@ This repos contains tool classes in C# for multiple types of usage.
 ## Available packages
 
 * `FrApp42.System` - [Link](https://www.nuget.org/packages/FrApp42.System)
+  * Avake: Awake class from PowerToys
   * IsOnline: Ping a device with it's hostname or ip address to check if it's online
   * Shutdown: Shutdown a device through SMB with it's hostname or ip address. It only work for Windows devices.
   * WakeOnLan: Power on a device with it mac address.
+
 * `FrApp42.Web` - [Link](https://www.nuget.org/packages/FrApp42.Web)
   * Request: Make API request for any of your C# projects. ⚠️ *SOAP requests are not supported.* ⚠️
+
+## Authors
+* [AnthoDingo](https://github.com)
+* [Sikelio](https://github.com)
 
 ## Licence
 

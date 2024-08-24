@@ -19,8 +19,8 @@
 	<PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
 	<PackageReadmeFile>README.md</PackageReadmeFile>
 	<Company>FrenchyApps42</Company>
-	<PackageIcon>Logo.png</PackageIcon>
-	<Version>1.0.1</Version>
+	<PackageIcon>logo.png</PackageIcon>
+	<Version>1.1.0</Version>
   </PropertyGroup>
 
   <ItemGroup>
@@ -28,7 +28,7 @@
       <Pack>True</Pack>
       <PackagePath>\</PackagePath>
     </None>
-    <None Include="..\Logo.png">
+    <None Include="..\logo.png">
       <Pack>True</Pack>
       <PackagePath>\</PackagePath>
     </None>
