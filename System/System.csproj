@@ -20,10 +20,10 @@
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <Company>FrenchyApps42</Company>
     <PackageIcon>logo.png</PackageIcon>
-    <Version>1.0.2</Version>
-    <AssemblyVersion>1.0.2</AssemblyVersion>
+    <Version>1.1.0</Version>
+    <AssemblyVersion>1.1.0</AssemblyVersion>
     <PackageReleaseNotes>Implement Awake from Microsoft Powertoys</PackageReleaseNotes>
-    <FileVersion>1.0.2.1</FileVersion>
+    <FileVersion>1.1.0</FileVersion>
   </PropertyGroup>
 
   <ItemGroup>
