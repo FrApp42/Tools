@@ -24,6 +24,7 @@ namespace FrApp42.System.Computer.Awake.v2
         {
             _log = LogManager.GetCurrentClassLogger();
             _cts = new CancellationTokenSource();
+            _stateQueue = [];
             StartMonitor();
         }
 

@@ -39,9 +39,12 @@ namespace FrApp42.System.Computer.Awake.v1
         /// <param name="callback"></param>
         /// <param name="failureCallback"></param>
         /// <param name="keepDisplayOn"></param>
-        public static void SetIndefiniteKeepAwake(Action<bool>? callback, Action? failureCallback, bool keepDisplayOn = false)
+        public static void SetIndefiniteKeepAwake(Action<bool> callback, Action? failureCallback, bool keepDisplayOn = false)
         {
             _cts.Cancel();
+
+            callback ??= (bool success) => { };
+            failureCallback ??= () => { };
 
             try
             {
