@@ -62,17 +62,8 @@ Awake.CompleteExit(0, false, "AppName");
 Updated version of Power Awake
 
 ```C#
-using FrApps42.System.Computer.Awake.v1;
+using FrApps42.System.Computer.Awake.v2;
 ...
-
-private static void LogUnexpectedOrCancelledKeepAwakeThreadCompletion(){
-    Console.WriteLine("The keep-awake thread was terminated early.");
-}
-
-private static void LogCompletedKeepAwakeThread(bool result)
-{
-    Console.WriteLine($"Exited keep-awake thread successfully: {result}");
-}
 
 // Keep Screen on
 Awake..SetIndefiniteKeepAwake(true);

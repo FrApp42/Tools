@@ -22,7 +22,7 @@
     <PackageIcon>logo.png</PackageIcon>
     <Version>1.1.0</Version>
     <AssemblyVersion>1.1.0</AssemblyVersion>
-    <PackageReleaseNotes>Implement Awake from Microsoft Powertoys</PackageReleaseNotes>
+    <PackageReleaseNotes>Fix Awake v1 &amp; v2</PackageReleaseNotes>
     <FileVersion>1.1.0</FileVersion>
   </PropertyGroup>
 
