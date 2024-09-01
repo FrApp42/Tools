@@ -9,7 +9,7 @@
     <Title>FrApp42 System</Title>
     <Authors>FrenchyApps42, Sikelio, AnthoDingo</Authors>
     <Copyright>GPLv3</Copyright>
-    <PackageProjectUrl>https://github.com/FrApp42/Tools</PackageProjectUrl>
+    <PackageProjectUrl>https://frapp42.github.io/Tools/api.System/FrApp42.System.Computer.Awake.v1.html</PackageProjectUrl>
     <RepositoryUrl>https://github.com/FrApp42/Tools.git</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
