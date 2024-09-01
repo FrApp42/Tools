@@ -41,7 +41,7 @@ namespace System.Test
 			Assert.AreEqual(customTimeout, isOnline.TimeOut, $"Timeout should be {customTimeout}.");
 		}
 
-		/*[TestMethod]
+		[TestMethod]
 		public void CheckWithHostname()
 		{
 			IsOnline isOnline = new(_googleHostname);
@@ -59,6 +59,6 @@ namespace System.Test
 			bool result = isOnline.Check();
 
 			Assert.IsTrue(result, "Google IP address should be reachable.");
-		}*/
+		}
 	}
 }
