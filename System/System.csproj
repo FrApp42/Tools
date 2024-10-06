@@ -9,7 +9,7 @@
     <Title>FrApp42 System</Title>
     <Authors>FrenchyApps42, Sikelio, AnthoDingo</Authors>
     <Copyright>GPLv3</Copyright>
-    <PackageProjectUrl>https://github.com/FrApp42/Tools</PackageProjectUrl>
+    <PackageProjectUrl>https://frapp42.github.io/Tools/api.System/FrApp42.System.Computer.Awake.v1.html</PackageProjectUrl>
     <RepositoryUrl>https://github.com/FrApp42/Tools.git</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
@@ -22,7 +22,7 @@
     <PackageIcon>logo.png</PackageIcon>
     <Version>1.1.0</Version>
     <AssemblyVersion>1.1.0</AssemblyVersion>
-    <PackageReleaseNotes>Implement Awake from Microsoft Powertoys</PackageReleaseNotes>
+    <PackageReleaseNotes>Fix Awake v1 &amp; v2</PackageReleaseNotes>
     <FileVersion>1.1.0</FileVersion>
   </PropertyGroup>
 

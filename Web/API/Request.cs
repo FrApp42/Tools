@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using System.Net.Http.Headers;
 using System.Text;
+using System.Xml.Serialization;
 
 namespace FrApp42.Web.API
 {
@@ -392,8 +393,24 @@ namespace FrApp42.Web.API
 
                 if (response.IsSuccessStatusCode)
                 {
-                    Stream ContentResponse = await response.Content?.ReadAsStreamAsync();
-                    result.Value = await System.Text.Json.JsonSerializer.DeserializeAsync<T>(ContentResponse);
+                    string MediaType = response.Content?.Headers?.ContentType?.MediaType.ToLower();
+                    string ContentResponse = await response.Content?.ReadAsStringAsync();
+
+                    switch (true)
+                    {
+                        case bool b when (MediaType.Contains("application/xml")):
+                            XmlSerializer xmlSerializer = new(typeof(T));
+                            StringReader reader = new(ContentResponse);
+
+                            result.Value = (T)xmlSerializer.Deserialize(reader);
+                            break;
+                        case bool b when (MediaType.Contains("application/json")):
+                            result.Value = JsonConvert.DeserializeObject<T>(ContentResponse);
+                            break;
+                        default:
+                            result.Value = default;
+                            break;
+                    }
                 }
                 else
                 {
