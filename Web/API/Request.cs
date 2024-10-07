@@ -391,9 +391,19 @@ namespace FrApp42.Web.API
                 response = await _httpClient.SendAsync(request);
                 result.StatusCode = (int)response.StatusCode;
 
+                if (
+                    response.Content == null ||
+                    string.IsNullOrEmpty(await response.Content.ReadAsStringAsync())
+                )
+                {
+                    result.Value = default;
+
+                    return result;
+                }
+
                 if (response.IsSuccessStatusCode)
                 {
-                    string MediaType = response.Content?.Headers?.ContentType?.MediaType.ToLower();
+                    string? MediaType = response.Content?.Headers?.ContentType?.MediaType.ToLower();
                     string ContentResponse = await response.Content?.ReadAsStringAsync();
 
                     switch (true)
