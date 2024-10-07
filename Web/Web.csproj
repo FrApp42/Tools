@@ -20,7 +20,7 @@
 	<PackageReadmeFile>README.md</PackageReadmeFile>
 	<Company>FrenchyApps42</Company>
 	<PackageIcon>logo.png</PackageIcon>
-	<Version>1.2.0</Version>
+	<Version>1.2.1</Version>
   </PropertyGroup>
 
   <ItemGroup>
