@@ -408,7 +408,7 @@ namespace FrApp42.Web.API
 
                     switch (true)
                     {
-                        case bool b when (MediaType.Contains("application/xml")):
+                        case bool b when (MediaType.Contains("xml")):
                             XmlSerializer xmlSerializer = new(typeof(T));
                             StringReader reader = new(ContentResponse);
 
