@@ -9,6 +9,7 @@ namespace FrApp42.Web.API
     public class Request
     {
         #region Variables
+
         /// <summary>
         /// The HTTP client used to send requests.
         /// </summary>
@@ -61,12 +62,13 @@ namespace FrApp42.Web.API
         /// <summary>
         /// Gets the name of the binary document file.
         /// </summary>
-        public string DocumentFileName { get; private set; } = null;
+        public string? DocumentFileName { get; private set; } = null;
 
         /// <summary>
         /// Gets the content type of the request.
         /// </summary>
         public string ContentType { get; private set; } = null;
+        
         #endregion
 
         #region Constructors
@@ -202,12 +204,12 @@ namespace FrApp42.Web.API
         }
 
         /// <summary>
-        /// Adds a binary document to the request content.
+        /// Adds a <see cref="byte[]"/> to the request content.
         /// </summary>
         /// <param name="document">The binary file content.</param>
         /// <param name="fileName">The name of the file.</param>
         /// <returns>Instance</returns>
-        public Request AddDocumentBody(byte[] document, string fileName)
+        public Request AddByteBody(byte[] document, string? fileName)
         {
             DocumentBody = document;
             DocumentFileName = fileName;
@@ -325,9 +327,38 @@ namespace FrApp42.Web.API
             return result;
 		}
 
+        /// <summary>
+        /// Executes the HTTP request by sending the raw binary content directly in the request body,
+        /// without using multipart encoding. This method is ideal for APIs expecting direct binary content,
+        /// equivalent to Postman's "Binary" body type.
+        /// </summary>
+        /// <typeparam name="T">The type of the expected response.</typeparam>
+        /// <returns>
+        /// A <see cref="Result{T}"/> object containing the deserialized response, the HTTP status code,
+        /// and any error message if the request fails.
+        /// </returns>
+        public async Task<Result<T>> RunBinaryRaw<T>()
+        {
+            HttpRequestMessage request = BuildBaseRequest();
+
+            if (DocumentBody == null)
+            {
+                return new Result<T>
+                {
+                    Error = "Document cannot be null",
+                    StatusCode = 500
+                };
+            }
+
+            request.Content = new ByteArrayContent(DocumentBody);
+            request.Content.Headers.ContentType = new MediaTypeHeaderValue(ContentType ?? "application/octet-stream");
+
+            return await Process<T>(request);
+        }
+
         #endregion
 
-        #region Private function
+        #region Private methods
 
         /// <summary>
         /// Constructs the URL for the request, including any query parameters if present.
@@ -403,19 +434,19 @@ namespace FrApp42.Web.API
 
                 if (response.IsSuccessStatusCode)
                 {
-                    string? MediaType = response.Content?.Headers?.ContentType?.MediaType.ToLower();
-                    string ContentResponse = await response.Content?.ReadAsStringAsync();
+                    string? mediaType = response.Content?.Headers?.ContentType?.MediaType.ToLower();
+                    string contentResponse = await response.Content?.ReadAsStringAsync();
 
                     switch (true)
                     {
-                        case bool b when (MediaType.Contains("xml")):
+                        case bool b when (mediaType.Contains("xml")):
                             XmlSerializer xmlSerializer = new(typeof(T));
-                            StringReader reader = new(ContentResponse);
+                            StringReader reader = new(contentResponse);
 
                             result.Value = (T)xmlSerializer.Deserialize(reader);
                             break;
-                        case bool b when (MediaType.Contains("application/json")):
-                            result.Value = JsonConvert.DeserializeObject<T>(ContentResponse);
+                        case bool b when (mediaType.Contains("application/json")):
+                            result.Value = JsonConvert.DeserializeObject<T>(contentResponse);
                             break;
                         default:
                             result.Value = default;

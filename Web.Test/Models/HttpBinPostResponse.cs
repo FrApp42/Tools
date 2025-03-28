@@ -1,19 +1,19 @@
-﻿using System.Text.Json.Serialization;
+﻿using Newtonsoft.Json;
 
 namespace Web.Test.Models
 {
 	public class HttpBinPostResponse : HttpBinResponseBase
 	{
-		[JsonPropertyName("data")]
-		public string Data { get; set; }
+		[JsonProperty("data")]
+		public string Data { get; set; } = string.Empty;
 
-		[JsonPropertyName("files")]
-		public Dictionary<string, string> Files { get; set; }
+		[JsonProperty("files")]
+		public Dictionary<string, string> Files { get; set; } = [];
 
-		[JsonPropertyName("form")]
-		public Dictionary<string, string> Form { get; set; }
+		[JsonProperty("form")]
+		public Dictionary<string, string> Form { get; set; } = [];
 
-		[JsonPropertyName("json")]
-		public object Json { get; set; }
+		[JsonProperty("json")]
+		public object Json { get; set; } = new();
 	}
 }

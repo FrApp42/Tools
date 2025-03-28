@@ -15,7 +15,7 @@ Install-Package FrApp42.Net
 
 ```csharp
 using FrApp42.Web.API;
-using System.Text.Json.Serialization;
+using Newtonsoft.Json;
 
 string url = "your-url";
 
@@ -34,10 +34,10 @@ if (result.StatusCode == 200 && result.Value != null)
 
 class MyModel
 {
-    [JsonPropertyName("name")]
+    [JsonProperty("name")]
     public string Name { get; set; }
 
-    [JsonPropertyName("description")]
+    [JsonProperty("description")]
     public string Description { get; set; }
 }
 ```
