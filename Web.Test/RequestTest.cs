@@ -72,12 +72,12 @@ namespace Web.Test
 			Request request = new(TestPostUrl, HttpMethod.Post);
 			request
 				.SetContentType("text/plain")
-				.AddDocumentBody(fileBytes, fileName);
+				.AddByteBody(fileBytes, fileName);
 
 			Result<HttpBinPostFileResponse> result = await request.RunDocument<HttpBinPostFileResponse>();
 
 			AssertResponse(result, TestPostUrl);
-			StringAssert.Contains(result.Value.Data, "Hello world", "File content should contain 'Hello World'");
+			StringAssert.Contains(result.Value?.Data, "Hello world", "File content should contain 'Hello World'");
 		}
 
 		[TestMethod]
@@ -135,5 +135,5 @@ namespace Web.Test
 			Assert.IsTrue(result.Value.Length > 0, "Image data should not be empty");
 			File.WriteAllBytes($"test_image.{imgType}", result.Value);
 		}
-	}
+    }
 }
