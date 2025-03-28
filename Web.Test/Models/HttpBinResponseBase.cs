@@ -1,40 +1,40 @@
-﻿using System.Text.Json.Serialization;
+﻿using Newtonsoft.Json;
 
 namespace Web.Test.Models
 {
 	public class HttpBinResponseBase
 	{
-		[JsonPropertyName("args")]
-		public Dictionary<string, string> Args { get; set; }
+		[JsonProperty("args")]
+		public Dictionary<string, string> Args { get; set; } = [];
 
-		[JsonPropertyName("headers")]
-		public HttpBinResponseHeaders Headers { get; set; }
+		[JsonProperty("headers")]
+		public HttpBinResponseHeaders Headers { get; set; } = new();
 
-		[JsonPropertyName("origin")]
-		public string Origin { get; set; }
+		[JsonProperty("origin")]
+		public string Origin { get; set; } = string.Empty;
 
-		[JsonPropertyName("url")]
-		public string Url { get; set; }
+		[JsonProperty("url")]
+		public string Url { get; set; } = string.Empty;
 	}
 
 	public class HttpBinResponseHeaders
 	{
-		[JsonPropertyName("Accept")]
-		public string Accept { get; set; }
+		[JsonProperty("Accept")]
+		public string Accept { get; set; } = string.Empty;
 
-		[JsonPropertyName("Accept-Encoding")]
-		public string AcceptEncoding { get; set; }
+		[JsonProperty("Accept-Encoding")]
+		public string AcceptEncoding { get; set; } = string.Empty;
 
-		[JsonPropertyName("Accept-Language")]
-		public string AcceptLanguage { get; set; }
+        [JsonProperty("Accept-Language")]
+		public string AcceptLanguage { get; set; } = string.Empty;
 
-		[JsonPropertyName("Host")]
-		public string Host { get; set; }
+        [JsonProperty("Host")]
+		public string Host { get; set; } = string.Empty;
 
-		[JsonPropertyName("User-Agent")]
-		public string UserAgent { get; set; }
+        [JsonProperty("User-Agent")]
+		public string UserAgent { get; set; } = string.Empty;
 
-		[JsonPropertyName("X-Amzn-Trace-Id")]
-		public string AmazonTraceId { get; set; }
-	}
+        [JsonProperty("X-Amzn-Trace-Id")]
+		public string AmazonTraceId { get; set; } = string.Empty;
+    }
 }
