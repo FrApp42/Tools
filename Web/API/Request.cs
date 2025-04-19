@@ -125,6 +125,31 @@ namespace FrApp42.Web.API
         }
 
         /// <summary>
+        /// Sets the authorization header.
+        /// In case of an existing Authorization header, its value
+        /// will be replaced with the last set.
+        /// </summary>
+        /// <param name="value">Authorization header value</param>
+        /// <returns>Instance</returns>
+        public Request SetAuthorization(string value)
+        {
+            KeyValuePair<string, string>? existingAuthorization = RequestHeaders
+                .Where(rh => rh.Key == "Authorization")
+                .FirstOrDefault();
+
+            if (existingAuthorization == null)
+            {
+                AddHeader("Authorization", value);
+            }
+            else
+            {
+                RequestHeaders[existingAuthorization.Value.Key] = value;
+            }
+
+            return this;
+        }
+
+        /// <summary>
         /// Adds a content header to the request
         /// </summary>
         /// <param name="key">The content header key.</param>
