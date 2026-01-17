@@ -6,253 +6,298 @@ using System.Xml.Serialization;
 
 namespace FrApp42.Web.API
 {
-    public class Request
-    {
-        #region Variables
+	public class Request
+	{
+		#region Variables
+
+		/// <summary>
+		/// The HTTP client used to send requests.
+		/// </summary>
+		private readonly HttpClient _httpClient = new();
+
+		/// <summary>
+		/// Settings for JSON serialization.
+		/// </summary>
+		private readonly JsonSerializerSettings _jsonSerializerSettings = new()
+		{
+			ContractResolver = new JsonPropAttrResolver(),
+			Formatting = Formatting.Indented
+		};
 
         /// <summary>
-        /// The HTTP client used to send requests.
+        /// Set body as JSON
         /// </summary>
-        private readonly HttpClient _httpClient = new();
-
-        /// <summary>
-        /// Settings for JSON serialization.
-        /// </summary>
-        private readonly JsonSerializerSettings _jsonSerializerSettings = new()
-        {
-            ContractResolver = new JsonPropAttrResolver(),
-            Formatting = Formatting.Indented
-        };
+        private bool _isJsonBody = false;
 
         /// <summary>
         /// Gets the URL to send the request to.
         /// </summary>
         public string URL { get; private set; } = string.Empty;
 
-        /// <summary>
-        /// Gets the HTTP method to use for the request.
-        /// </summary>
-        public HttpMethod Method { get; private set; } = HttpMethod.Get;
+		/// <summary>
+		/// Gets the HTTP method to use for the request.
+		/// </summary>
+		public HttpMethod Method { get; private set; } = HttpMethod.Get;
 
-        /// <summary>
-        /// Gets the request headers.
-        /// </summary>
-        public Dictionary<string, string> RequestHeaders { get; private set; } = [];
+		/// <summary>
+		/// Gets the request headers.
+		/// </summary>
+		public Dictionary<string, string> RequestHeaders { get; private set; } = [];
 
-        /// <summary>
-        /// Gets the content headers.
-        /// </summary>
-        public Dictionary<string, string> ContentHeaders { get; private set; } = [];
+		/// <summary>
+		/// Gets the content headers.
+		/// </summary>
+		public Dictionary<string, string> ContentHeaders { get; private set; } = [];
 
-        /// <summary>
-        /// Gets the query parameters.
-        /// </summary>
-        public Dictionary<string, string> QueryParams { get; private set; } = [];
+		/// <summary>
+		/// Gets the query parameters.
+		/// </summary>
+		public Dictionary<string, string> QueryParams { get; private set; } = [];
 
-        /// <summary>
-        /// Gets the JSON body content of the request.
-        /// </summary>
-        public object Body { get; private set; } = null;
+		/// <summary>
+		/// Gets the JSON body content of the request.
+		/// </summary>
+		public object Body { get; private set; } = null;
 
-        /// <summary>
-        /// Gets the binary document content of the request.
-        /// </summary>
-        public byte[] DocumentBody { get; private set; } = null;
+		/// <summary>
+		/// Gets the binary document content of the request.
+		/// </summary>
+		public byte[] DocumentBody { get; private set; } = null;
 
-        /// <summary>
-        /// Gets the name of the binary document file.
-        /// </summary>
-        public string? DocumentFileName { get; private set; } = null;
+		/// <summary>
+		/// Gets the name of the binary document file.
+		/// </summary>
+		public string? DocumentFileName { get; private set; } = null;
 
-        /// <summary>
-        /// Gets the content type of the request.
-        /// </summary>
-        public string ContentType { get; private set; } = null;
-        
-        #endregion
+		/// <summary>
+		/// Gets the content type of the request.
+		/// </summary>
+		public string ContentType { get; private set; } = null;
+		
+		#endregion
 
-        #region Constructors
+		#region Constructors
 
-        /// <summary>
-        /// Initializes a new instance of the Request class with the specified URL.
-        /// </summary>
-        /// <param name="url">The URL to send the request to.</param>
-        public Request(string url)
-        {
-            URL = url;
-        }
+		/// <summary>
+		/// Initializes a new instance of the Request class with the specified URL.
+		/// </summary>
+		/// <param name="url">The URL to send the request to.</param>
+		public Request(string url)
+		{
+			URL = url;
+		}
 
-        /// <summary>
-        /// Initializes a new instance of the Request class with the specified URL and HTTP method.
-        /// </summary>
-        /// <param name="url">The URL to send the request to.</param>
-        /// <param name="method">The HTTP method to use for the request.</param>
-        public Request(string url, HttpMethod method): this(url)
-        {
-            Method = method;
-        }
+		/// <summary>
+		/// Initializes a new instance of the Request class with the specified URL and HTTP method.
+		/// </summary>
+		/// <param name="url">The URL to send the request to.</param>
+		/// <param name="method">The HTTP method to use for the request.</param>
+		public Request(string url, HttpMethod method): this(url)
+		{
+			Method = method;
+		}
 
-        #endregion
+		#endregion
 
-        #region Functions to update variables
+		#region Functions to update variables
 
-        /// <summary>
-        /// Adds a header to the request.
-        /// </summary>
-        /// <param name="key">The header key.</param>
-        /// <param name="value">The header value.</param>
-        /// <returns>Instance</returns>
-        public Request AddHeader(string key, string value)
-        {
-            RequestHeaders.Add(key, value);
+		/// <summary>
+		/// Adds a header to the request.
+		/// </summary>
+		/// <param name="key">The header key.</param>
+		/// <param name="value">The header value.</param>
+		/// <returns>Instance</returns>
+		public Request AddHeader(string key, string value)
+		{
+			RequestHeaders.Add(key, value);
+
+			return this;
+		}
+
+		/// <summary>
+		/// Adds multiple headers from a dictionary of key-value pairs to the request.
+		/// </summary>
+		/// <param name="headers">Headers in dictionary.</param>
+		/// <returns>Instance</returns>
+		public Request AddHeaders(Dictionary<string, string> headers)
+		{
+			foreach (KeyValuePair<string, string> header in headers)
+			{
+				RequestHeaders.Add(header.Key, header.Value);
+			}
+
+			return this;
+		}
+
+		/// <summary>
+		/// Sets the authorization header.
+		/// In case of an existing Authorization header, its value
+		/// will be replaced with the last set.
+		/// </summary>
+		/// <param name="value">Authorization header value</param>
+		/// <returns>Instance</returns>
+		public Request SetAuthorization(string value)
+		{
+			KeyValuePair<string, string>? existingAuthorization = RequestHeaders
+				.Where(rh => rh.Key == "Authorization")
+				.FirstOrDefault();
+
+			if (existingAuthorization.Equals(new KeyValuePair<string, string>()))
+			{
+				AddHeader("Authorization", value);
+			}
+			else
+			{
+				RequestHeaders[existingAuthorization.Value.Key] = value;
+			}
+
+			return this;
+		}
+
+		/// <summary>
+		/// Adds a content header to the request
+		/// </summary>
+		/// <param name="key">The content header key.</param>
+		/// <param name="value">The content header value.</param>
+		/// <returns>Instance</returns>
+		public Request AddContentHeader(string key, string value)
+		{
+			ContentHeaders.Add(key, value);
+
+			return this;
+		}
+
+		/// <summary>
+		/// Adds multiple content headers from a dictionary of key-value pairs to the request.
+		/// </summary>
+		/// <param name="headers">Content headers in dictionary.</param>
+		/// <returns>Instance</returns>
+		public Request AddContentHeaders(Dictionary<string, string> headers)
+		{
+			foreach (KeyValuePair<string, string> header in headers)
+			{
+				ContentHeaders.Add(header.Key, header.Value);
+			}
+
+			return this;
+		}
+
+		/// <summary>
+		/// Adds a query parameter to the request.
+		/// </summary>
+		/// <param name="key">The query parameter key.</param>
+		/// <param name="value">The query parameter value.</param>
+		/// <returns>Instance</returns>
+		public Request AddQueryParam(string key, string value)
+		{
+			QueryParams.Add(key, value);
+
+			return this;
+		}
+
+		/// <summary>
+		/// Adds multiple content headers from a dictionary of key-value pairs to the request.
+		/// </summary>
+		/// <param name="queryParams">Query parameters in dictionary.</param>
+		/// <returns>Instance</returns>
+		public Request AddQueryParams(Dictionary<string, string> queryParams)
+		{
+			foreach (KeyValuePair<string, string> query in queryParams)
+			{
+				QueryParams.Add(query.Key, query.Value);
+			}
+
+			return this;
+		}
+
+		/// <summary>
+		/// Adds an "Accept" header with the value "application/json" to the request.
+		/// </summary>
+		/// <returns>Instance</returns>
+		public Request AcceptJson()
+		{
+			RequestHeaders.Add("Accept", "application/json");
+
+			return this;
+		}
+
+		/// <summary>
+		/// Adds a JSON body to the request content.
+		/// </summary>
+		/// <param name="body">The JSON body content.</param>
+		/// <returns>Instance</returns>
+		public Request AddJsonBody(object body)
+		{
+			Body = body;
+			_isJsonBody = true;
 
             return this;
-        }
+		}
 
-        /// <summary>
-        /// Adds multiple headers from a dictionary of key-value pairs to the request.
-        /// </summary>
-        /// <param name="headers">Headers in dictionary.</param>
-        /// <returns>Instance</returns>
-        public Request AddHeaders(Dictionary<string, string> headers)
-        {
-            foreach (KeyValuePair<string, string> header in headers)
-            {
-                RequestHeaders.Add(header.Key, header.Value);
-            }
+		/// <summary>
+		/// Adds a <see cref="byte[]"/> to the request content.
+		/// </summary>
+		/// <param name="document">The binary file content.</param>
+		/// <param name="fileName">The name of the file.</param>
+		/// <returns>Instance</returns>
+		public Request AddByteBody(byte[] document, string? fileName)
+		{
+			DocumentBody = document;
+			DocumentFileName = fileName;
 
-            return this;
-        }
+			return this;
+		}
 
-        /// <summary>
-        /// Adds a content header to the request
-        /// </summary>
-        /// <param name="key">The content header key.</param>
-        /// <param name="value">The content header value.</param>
-        /// <returns>Instance</returns>
-        public Request AddContentHeader(string key, string value)
-        {
-            ContentHeaders.Add(key, value);
+		public Request AddTextBody(object body)
+		{
+			Body = body;
+			_isJsonBody = false;
+			return this;
+		}
 
-            return this;
-        }
+		/// <summary>
+		/// Sets the content type of the request.
+		/// </summary>
+		/// <param name="contentType">The content type of the request.</param>
+		/// <returns>Instance</returns>
+		public Request SetContentType(string contentType)
+		{
+			ContentType = contentType;
 
-        /// <summary>
-        /// Adds multiple content headers from a dictionary of key-value pairs to the request.
-        /// </summary>
-        /// <param name="headers">Content headers in dictionary.</param>
-        /// <returns>Instance</returns>
-        public Request AddContentHeaders(Dictionary<string, string> headers)
-        {
-            foreach (KeyValuePair<string, string> header in headers)
-            {
-                ContentHeaders.Add(header.Key, header.Value);
-            }
+			return this;
+		}
 
-            return this;
-        }
+		#endregion
 
-        /// <summary>
-        /// Adds a query parameter to the request.
-        /// </summary>
-        /// <param name="key">The query parameter key.</param>
-        /// <param name="value">The query parameter value.</param>
-        /// <returns>Instance</returns>
-        public Request AddQueryParam(string key, string value)
-        {
-            QueryParams.Add(key, value);
+		#region Peform request
 
-            return this;
-        }
+		/// <summary>
+		/// Executes the HTTP request with the JSON body content included.
+		/// </summary>
+		/// <typeparam name="T">The type of the response expected from the request.</typeparam>
+		/// <returns>A Result object containing the response.</returns>
+		public async Task<Result<T>> Run<T>()
+		{
+			HttpRequestMessage request = BuildBaseRequest();
 
-        /// <summary>
-        /// Adds multiple content headers from a dictionary of key-value pairs to the request.
-        /// </summary>
-        /// <param name="queryParams">Query parameters in dictionary.</param>
-        /// <returns>Instance</returns>
-        public Request AddQueryParams(Dictionary<string, string> queryParams)
-        {
-            foreach (KeyValuePair<string, string> query in queryParams)
-            {
-                QueryParams.Add(query.Key, query.Value);
-            }
+			if (Body != null)
+			{
+				if (_isJsonBody)
+				{
+                    string json = JsonConvert.SerializeObject(Body, _jsonSerializerSettings);
+                    request.Content = new StringContent(json, Encoding.UTF8, "application/json");
+                    request.Content.Headers.ContentType = new("application/json");
+                } else
+				{
+                    request.Content = new StringContent((string)Body, Encoding.UTF8, "text/plain");
+                    request.Content.Headers.ContentType = new("text/plain");
+                }
+			}
 
-            return this;
-        }
+			Result<T> result = await Process<T>(request);
 
-        /// <summary>
-        /// Adds an "Accept" header with the value "application/json" to the request.
-        /// </summary>
-        /// <returns>Instance</returns>
-        public Request AcceptJson()
-        {
-            RequestHeaders.Add("Accept", "application/json");
-
-            return this;
-        }
-
-        /// <summary>
-        /// Adds a JSON body to the request content.
-        /// </summary>
-        /// <param name="body">The JSON body content.</param>
-        /// <returns>Instance</returns>
-        public Request AddJsonBody(object body)
-        {
-            Body = body;
-
-            return this;
-        }
-
-        /// <summary>
-        /// Adds a <see cref="byte[]"/> to the request content.
-        /// </summary>
-        /// <param name="document">The binary file content.</param>
-        /// <param name="fileName">The name of the file.</param>
-        /// <returns>Instance</returns>
-        public Request AddByteBody(byte[] document, string? fileName)
-        {
-            DocumentBody = document;
-            DocumentFileName = fileName;
-
-            return this;
-        }
-
-        /// <summary>
-        /// Sets the content type of the request.
-        /// </summary>
-        /// <param name="contentType">The content type of the request.</param>
-        /// <returns>Instance</returns>
-        public Request SetContentType(string contentType)
-        {
-            ContentType = contentType;
-
-            return this;
-        }
-
-        #endregion
-
-        #region Peform request
-
-        /// <summary>
-        /// Executes the HTTP request with the JSON body content included.
-        /// </summary>
-        /// <typeparam name="T">The type of the response expected from the request.</typeparam>
-        /// <returns>A Result object containing the response.</returns>
-        public async Task<Result<T>> Run<T>()
-        {
-            HttpRequestMessage request = BuildBaseRequest();
-
-            if (Body != null)
-            {
-                string json = JsonConvert.SerializeObject(Body, _jsonSerializerSettings);
-                request.Content = new StringContent(json, Encoding.UTF8, "application/json");
-                request.Content.Headers.ContentType = new("application/json");
-            }
-
-            Result<T> result = await Process<T>(request);
-
-            return result;
-        }
+			return result;
+		}
 
 		/// <summary>
 		/// Executes the HTTP request and returns the response content as a byte array.
@@ -260,36 +305,36 @@ namespace FrApp42.Web.API
 		/// <typeparam name="T">The type of the response expected from the request.</typeparam>
 		/// <returns>A Result object containing the response.</returns>
 		public async Task<Result<T>> RunDocument<T>()
-        {
-            HttpRequestMessage request = BuildBaseRequest();
+		{
+			HttpRequestMessage request = BuildBaseRequest();
 
-            if (DocumentBody == null)
-            {
-                return new Result<T>()
-                {
-                    Error = "Document cannot be null",
-                    StatusCode = 500,
-                };
-            }
+			if (DocumentBody == null)
+			{
+				return new Result<T>()
+				{
+					Error = "Document cannot be null",
+					StatusCode = 500,
+				};
+			}
 
-            MultipartFormDataContent content = new();
-            ByteArrayContent fileContent = new(DocumentBody);
+			MultipartFormDataContent content = new();
+			ByteArrayContent fileContent = new(DocumentBody);
 
-            fileContent.Headers.ContentDisposition = new ContentDispositionHeaderValue("binary")
-            {
-                Name = "file",
-                FileName = DocumentFileName
-            };
+			fileContent.Headers.ContentDisposition = new ContentDispositionHeaderValue("binary")
+			{
+				Name = "file",
+				FileName = DocumentFileName
+			};
 
-            content.Add(fileContent);
+			content.Add(fileContent);
 
-            request.Content = content;
-            request.Content.Headers.ContentType = new(ContentType);
+			request.Content = content;
+			request.Content.Headers.ContentType = new(ContentType);
 
-            Result<T> result = await Process<T>(request);
+			Result<T> result = await Process<T>(request);
 
-            return result;
-        }
+			return result;
+		}
 
 		/// <summary>
 		/// Executes the HTTP request that will return a byte array.
@@ -299,15 +344,15 @@ namespace FrApp42.Web.API
 		/// the status code of the response, and any error message if the request fails.
 		/// </returns>
 		public async Task<Result<byte[]>> RunGetBytes()
-        {
+		{
 			HttpRequestMessage request = BuildBaseRequest();
 			Result<byte[]> result = new();
 
-            try
-            {
-                HttpResponseMessage response = await _httpClient.SendAsync(request);
+			try
+			{
+				HttpResponseMessage response = await _httpClient.SendAsync(request);
 
-                result.StatusCode = (int)response.StatusCode;
+				result.StatusCode = (int)response.StatusCode;
 
 				if (response.IsSuccessStatusCode)
 				{
@@ -318,155 +363,155 @@ namespace FrApp42.Web.API
 					result.Error = await response.Content.ReadAsStringAsync();
 				}
 			}
-            catch (Exception ex)
-            {
+			catch (Exception ex)
+			{
 				result.StatusCode = 500;
 				result.Error = ex.Message;
 			}
 
-            return result;
+			return result;
 		}
 
-        /// <summary>
-        /// Executes the HTTP request by sending the raw binary content directly in the request body,
-        /// without using multipart encoding. This method is ideal for APIs expecting direct binary content,
-        /// equivalent to Postman's "Binary" body type.
-        /// </summary>
-        /// <typeparam name="T">The type of the expected response.</typeparam>
-        /// <returns>
-        /// A <see cref="Result{T}"/> object containing the deserialized response, the HTTP status code,
-        /// and any error message if the request fails.
-        /// </returns>
-        public async Task<Result<T>> RunBinaryRaw<T>()
-        {
-            HttpRequestMessage request = BuildBaseRequest();
+		/// <summary>
+		/// Executes the HTTP request by sending the raw binary content directly in the request body,
+		/// without using multipart encoding. This method is ideal for APIs expecting direct binary content,
+		/// equivalent to Postman's "Binary" body type.
+		/// </summary>
+		/// <typeparam name="T">The type of the expected response.</typeparam>
+		/// <returns>
+		/// A <see cref="Result{T}"/> object containing the deserialized response, the HTTP status code,
+		/// and any error message if the request fails.
+		/// </returns>
+		public async Task<Result<T>> RunBinaryRaw<T>()
+		{
+			HttpRequestMessage request = BuildBaseRequest();
 
-            if (DocumentBody == null)
-            {
-                return new Result<T>
-                {
-                    Error = "Document cannot be null",
-                    StatusCode = 500
-                };
-            }
+			if (DocumentBody == null)
+			{
+				return new Result<T>
+				{
+					Error = "Document cannot be null",
+					StatusCode = 500
+				};
+			}
 
-            request.Content = new ByteArrayContent(DocumentBody);
-            request.Content.Headers.ContentType = new MediaTypeHeaderValue(ContentType ?? "application/octet-stream");
+			request.Content = new ByteArrayContent(DocumentBody);
+			request.Content.Headers.ContentType = new MediaTypeHeaderValue(ContentType ?? "application/octet-stream");
 
-            return await Process<T>(request);
-        }
+			return await Process<T>(request);
+		}
 
-        #endregion
+		#endregion
 
-        #region Private methods
+		#region Private methods
 
-        /// <summary>
-        /// Constructs the URL for the request, including any query parameters if present.
-        /// </summary>
-        /// <returns>Request URL with added query parameters.</returns>
-        private string BuildUrl()
-        {
-            StringBuilder builder = new(URL);
-            string fullUrl = URL;
+		/// <summary>
+		/// Constructs the URL for the request, including any query parameters if present.
+		/// </summary>
+		/// <returns>Request URL with added query parameters.</returns>
+		private string BuildUrl()
+		{
+			StringBuilder builder = new(URL);
+			string fullUrl = URL;
 
-            if (fullUrl.EndsWith("/"))
-                builder.Remove(fullUrl.Length - 1, 1);
+			if (fullUrl.EndsWith("/"))
+				builder.Remove(fullUrl.Length - 1, 1);
 
-            if (QueryParams.Count() > 0)
-            {
-                builder.Append("?");
+			if (QueryParams.Count() > 0)
+			{
+				builder.Append("?");
 
-                for (int i = 0; i < QueryParams.Count(); i++)
-                {
-                    KeyValuePair<string, string> query = QueryParams.ElementAt(i);
-                    builder.Append($"{query.Key}={query.Value}");
+				for (int i = 0; i < QueryParams.Count(); i++)
+				{
+					KeyValuePair<string, string> query = QueryParams.ElementAt(i);
+					builder.Append($"{query.Key}={query.Value}");
 
-                    if (!(i == QueryParams.Count() - 1))
-                        builder.Append("&");
-                }
-            }
+					if (!(i == QueryParams.Count() - 1))
+						builder.Append("&");
+				}
+			}
 
-            return builder.ToString();
-        }
+			return builder.ToString();
+		}
 
-        /// <summary>
-        /// Constructs the base HTTP request message by adding the specified headers.
-        /// </summary>
-        /// <returns>Base request message.</returns>
-        private HttpRequestMessage BuildBaseRequest()
-        {
-            HttpRequestMessage request = new(Method, BuildUrl());
+		/// <summary>
+		/// Constructs the base HTTP request message by adding the specified headers.
+		/// </summary>
+		/// <returns>Base request message.</returns>
+		private HttpRequestMessage BuildBaseRequest()
+		{
+			HttpRequestMessage request = new(Method, BuildUrl());
 
-            for (int i = 0; i < RequestHeaders.Count(); i++)
-            {
-                KeyValuePair<string, string> header = RequestHeaders.ElementAt(i);
-                request.Headers.Add(header.Key, header.Value);
-            }
+			for (int i = 0; i < RequestHeaders.Count(); i++)
+			{
+				KeyValuePair<string, string> header = RequestHeaders.ElementAt(i);
+				request.Headers.Add(header.Key, header.Value);
+			}
 
-            return request;
-        }
+			return request;
+		}
 
-        /// <summary>
-        /// Executes the HTTP request and processes the response.
-        /// </summary>
-        /// <typeparam name="T">The type of the response expected from the request.</typeparam>
-        /// <param name="request">The prepared HTTP request message.</param>
-        /// <returns>A Result object containing the response.</returns>
-        private async Task<Result<T>> Process<T>(HttpRequestMessage request)
-        {
-            HttpResponseMessage response;
-            Result<T> result = new();
+		/// <summary>
+		/// Executes the HTTP request and processes the response.
+		/// </summary>
+		/// <typeparam name="T">The type of the response expected from the request.</typeparam>
+		/// <param name="request">The prepared HTTP request message.</param>
+		/// <returns>A Result object containing the response.</returns>
+		private async Task<Result<T>> Process<T>(HttpRequestMessage request)
+		{
+			HttpResponseMessage response;
+			Result<T> result = new();
 
-            try
-            {
-                response = await _httpClient.SendAsync(request);
-                result.StatusCode = (int)response.StatusCode;
+			try
+			{
+				response = await _httpClient.SendAsync(request);
+				result.StatusCode = (int)response.StatusCode;
 
-                if (
-                    response.Content == null ||
-                    string.IsNullOrEmpty(await response.Content.ReadAsStringAsync())
-                )
-                {
-                    result.Value = default;
+				if (
+					response.Content == null ||
+					string.IsNullOrEmpty(await response.Content.ReadAsStringAsync())
+				)
+				{
+					result.Value = default;
 
-                    return result;
-                }
+					return result;
+				}
 
-                if (response.IsSuccessStatusCode)
-                {
-                    string? mediaType = response.Content?.Headers?.ContentType?.MediaType.ToLower();
-                    string contentResponse = await response.Content?.ReadAsStringAsync();
+				if (response.IsSuccessStatusCode)
+				{
+					string? mediaType = response.Content?.Headers?.ContentType?.MediaType.ToLower();
+					string contentResponse = await response.Content?.ReadAsStringAsync();
 
-                    switch (true)
-                    {
-                        case bool b when (mediaType.Contains("xml")):
-                            XmlSerializer xmlSerializer = new(typeof(T));
-                            StringReader reader = new(contentResponse);
+					switch (true)
+					{
+						case bool b when (mediaType.Contains("xml")):
+							XmlSerializer xmlSerializer = new(typeof(T));
+							StringReader reader = new(contentResponse);
 
-                            result.Value = (T)xmlSerializer.Deserialize(reader);
-                            break;
-                        case bool b when (mediaType.Contains("application/json")):
-                            result.Value = JsonConvert.DeserializeObject<T>(contentResponse);
-                            break;
-                        default:
-                            result.Value = default;
-                            break;
-                    }
-                }
-                else
-                {
-                    result.Error = await response.Content.ReadAsStringAsync();
-                }
-            }
-            catch (Exception ex)
-            {
-                result.StatusCode = 500;
-                result.Error = ex.Message;
-            }
+							result.Value = (T)xmlSerializer.Deserialize(reader);
+							break;
+						case bool b when (mediaType.Contains("application/json")):
+							result.Value = JsonConvert.DeserializeObject<T>(contentResponse);
+							break;
+						default:
+							result.Value = default;
+							break;
+					}
+				}
+				else
+				{
+					result.Error = await response.Content.ReadAsStringAsync();
+				}
+			}
+			catch (Exception ex)
+			{
+				result.StatusCode = 500;
+				result.Error = ex.Message;
+			}
 
-            return result;
-        }
+			return result;
+		}
 
-        #endregion
-    }
+		#endregion
+	}
 }

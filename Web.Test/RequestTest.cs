@@ -104,6 +104,24 @@ namespace Web.Test
 			await SendImageRequest("image/webp", "webp");
 		}
 
+		[TestMethod]
+		public void CheckHeaders()
+		{
+			Request request = new("");
+			request
+				.AddHeader("Authorization", "test1")
+				.SetAuthorization("test2")
+				.SetAuthorization("test3");
+
+            KeyValuePair<string, string>? authorizationHeader = request
+				.RequestHeaders
+				.Where(rh => rh.Key == "Authorization")
+				.FirstOrDefault();
+
+			Assert.IsNotNull(authorizationHeader, "Authorization header should be set");
+			Assert.AreEqual("test3", authorizationHeader.Value.Value, "Authorization header value should be: test3");
+		}
+
 		private async Task SendImageRequest(string acceptType, string imageType)
 		{
 			Request request = new(TestGetWebpImageUrl, HttpMethod.Get);
