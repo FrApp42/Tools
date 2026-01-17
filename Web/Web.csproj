@@ -20,10 +20,11 @@
 	<PackageReadmeFile>README.md</PackageReadmeFile>
 	<Company>FrenchyApps42</Company>
 	<PackageIcon>logo.png</PackageIcon>
-	<Version>1.3.0</Version>
+	<Version>1.4.0</Version>
   </PropertyGroup>
 
   <ItemGroup>
+	<None Include="README.md" Pack="true" PackagePath="\" />
 	<None Update="README.md">
 	  <PackagePath>\</PackagePath>
 	  <Pack>True</Pack>
