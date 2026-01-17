@@ -24,10 +24,15 @@ namespace FrApp42.Web.API
 			Formatting = Formatting.Indented
 		};
 
-		/// <summary>
-		/// Gets the URL to send the request to.
-		/// </summary>
-		public string URL { get; private set; } = string.Empty;
+        /// <summary>
+        /// Set body as JSON
+        /// </summary>
+        private bool _isJsonBody = false;
+
+        /// <summary>
+        /// Gets the URL to send the request to.
+        /// </summary>
+        public string URL { get; private set; } = string.Empty;
 
 		/// <summary>
 		/// Gets the HTTP method to use for the request.
@@ -224,8 +229,9 @@ namespace FrApp42.Web.API
 		public Request AddJsonBody(object body)
 		{
 			Body = body;
+			_isJsonBody = true;
 
-			return this;
+            return this;
 		}
 
 		/// <summary>
@@ -239,6 +245,13 @@ namespace FrApp42.Web.API
 			DocumentBody = document;
 			DocumentFileName = fileName;
 
+			return this;
+		}
+
+		public Request AddTextBody(object body)
+		{
+			Body = body;
+			_isJsonBody = false;
 			return this;
 		}
 
@@ -269,9 +282,16 @@ namespace FrApp42.Web.API
 
 			if (Body != null)
 			{
-				string json = JsonConvert.SerializeObject(Body, _jsonSerializerSettings);
-				request.Content = new StringContent(json, Encoding.UTF8, "application/json");
-				request.Content.Headers.ContentType = new("application/json");
+				if (_isJsonBody)
+				{
+                    string json = JsonConvert.SerializeObject(Body, _jsonSerializerSettings);
+                    request.Content = new StringContent(json, Encoding.UTF8, "application/json");
+                    request.Content.Headers.ContentType = new("application/json");
+                } else
+				{
+                    request.Content = new StringContent((string)Body, Encoding.UTF8, "text/plain");
+                    request.Content.Headers.ContentType = new("text/plain");
+                }
 			}
 
 			Result<T> result = await Process<T>(request);
