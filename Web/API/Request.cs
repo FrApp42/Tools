@@ -16,6 +16,17 @@ namespace FrApp42.Web.API
 		private readonly HttpClient _httpClient = new();
 
 		/// <summary>
+		/// Gets or sets the timeout applied to every request sent by this instance.
+		/// Defaults to 100 seconds (HttpClient default).
+		/// Set to <see cref="System.Threading.Timeout.InfiniteTimeSpan"/> to disable.
+		/// </summary>
+		public TimeSpan Timeout
+		{
+			get => _httpClient.Timeout;
+			set => _httpClient.Timeout = value;
+		}
+
+		/// <summary>
 		/// Settings for JSON serialization.
 		/// </summary>
 		private readonly JsonSerializerSettings _jsonSerializerSettings = new()
@@ -502,6 +513,17 @@ namespace FrApp42.Web.API
 				{
 					result.Error = await response.Content.ReadAsStringAsync();
 				}
+			}
+			catch (TaskCanceledException ex) when (!ex.CancellationToken.IsCancellationRequested)
+			{
+				// HttpClient.Timeout dépassé — HttpClient lève TaskCanceledException dans ce cas
+				result.StatusCode = 408; // Request Timeout
+				result.Error = $"La requête a expiré ({_httpClient.Timeout.TotalSeconds}s).";
+			}
+			catch (TaskCanceledException ex)
+			{
+				result.StatusCode = 499;
+				result.Error = $"La requête a été annulée : {ex.Message}";
 			}
 			catch (Exception ex)
 			{
